@@ -27,16 +27,20 @@ body{background:#f5f7fa}
 .progress{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:8px 0}
 .progress div{height:100%;background:linear-gradient(90deg,#2563eb,#22c55e);width:0%}
 .verify{background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:12px;margin:12px}
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:260px;background:#0f172a;color:white;padding:16px;transform:translateX(-100%);transition:.3s;z-index:20}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:260px;background:#0f172a;color:white;padding:16px;transform:translateX(-100%);transition:.3s;z-index:20;overflow-y:auto}
 .sidebar.open{transform:translateX(0)}
-.sidebar a{display:block;color:white;text-decoration:none;padding:12px;border-radius:10px;margin:4px 0}
+.sidebar a{display:block;color:white;text-decoration:none;padding:12px;border-radius:10px;margin:4px 0;cursor:pointer}
 .sidebar a.active{background:#2563eb}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);display:none;z-index:15}
+.overlay.show{display:block}
 </style>
 </head>
 <body>
 
+<div class="overlay" id="overlay" onclick="dongMenu()"></div>
+
 <div class="header">
-<button onclick="document.getElementById('menu').classList.add('open')">☰</button>
+<button onclick="moMenu()">☰</button>
 <div class="balance">💰 0</div>
 <div style="display:flex;gap:10px;align-items:center"><a href="https://t.me/kiemluaonline" style="background:#229ED9;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none">✈️</a><span>🔔</span><div class="avatar">H</div></div>
 </div>
@@ -44,17 +48,18 @@ body{background:#f5f7fa}
 <div id="menu" class="sidebar">
 <h3>🌾 KIẾM LÚA ONLINE</h3>
 <p style="font-size:12px;color:#94a3b8;margin:8px 0">Làm nhiệm vụ - Nhận Lúa</p>
-<a href="#" class="active">📊 Tổng quan</a>
-<a href="#">🎯 Nhiệm vụ</a>
-<a href="#">👥 Tuyển Ref</a>
-<a href="#">🎁 Phúc lợi</a>
-<a href="#">💰 Rút tiền</a>
-<a href="#">📜 Lịch sử</a>
-<a href="#">👤 Hồ sơ</a>
-<a href="#" onclick="document.getElementById('menu').classList.remove('open')">❌ Đóng</a>
-<div style="background:#229ED9;padding:12px;border-radius:12px;margin-top:16px">✈️ <b>Tham gia Nhóm Telegram</b><br><small>Nhận thông báo rút tiền + nhiệm vụ mới</small><br><button style="background:white;color:#229ED9;border:none;padding:8px;border-radius:8px;margin-top:8px;width:100%;font-weight:bold">Tham gia ngay</button></div>
+<a onclick="diDen('tongquan')" class="active">📊 Tổng quan</a>
+<a onclick="diDen('nhiemvu')">🎯 Nhiệm vụ</a>
+<a onclick="diDen('tuyenref')">👥 Tuyển Ref</a>
+<a onclick="diDen('phucloi')">🎁 Phúc lợi</a>
+<a onclick="diDen('ruttien')">💰 Rút tiền</a>
+<a onclick="diDen('lichsu')">📜 Lịch sử</a>
+<a onclick="diDen('hoso')">👤 Hồ sơ</a>
+<a onclick="dongMenu()">❌ Đóng</a>
+<div style="background:#229ED9;padding:12px;border-radius:12px;margin-top:16px">✈️ <b>Tham gia Nhóm Telegram</b><br><small>Nhận thông báo rút tiền + nhiệm vụ mới</small><br><button style="background:white;color:#229ED9;border:none;padding:8px;border-radius:8px;margin-top:8px;width:100%;font-weight:bold" onclick="window.open('https://t.me/kiemluaonline')">Tham gia ngay</button></div>
 </div>
 
+<div id="tongquan">
 <div class="card green">
 <b>✅ RÚT TIỀN THÀNH CÔNG</b> <span class="badge">✈️ Tham gia Nhóm telegram</span>
 <p style="margin:8px 0;font-size:14px;color:#166534">TK 99******00 rút thành công - Số tiền 5.000 đ - Thời gian 4 giờ trước</p>
@@ -66,7 +71,7 @@ body{background:#f5f7fa}
 <p>Số dư khả dụng 💰</p>
 <h2>0 Lúa</h2>
 <p style="font-size:13px;opacity:.8">Sẵn sàng cho nhiệm vụ tiếp theo</p>
-<button class="btn">Rút tiền ↗</button>
+<button class="btn" onclick="diDen('ruttien')">Rút tiền ↗</button>
 </div>
 
 <div class="card">
@@ -93,7 +98,9 @@ body{background:#f5f7fa}
 </div>
 <p style="text-align:center;color:#999">📊 Chưa có dữ liệu thu nhập - Hoàn thành nhiệm vụ để xem biểu đồ!</p>
 </div>
+</div>
 
+<div id="nhiemvu">
 <div class="card">
 <b>🎯 Nhiệm vụ Vượt Link</b>
 <p style="font-size:13px;color:#666;margin:6px 0">KIẾM LÚA ONLINE là nền tảng nhiệm vụ trực tuyến dành cho người Việt. Hoàn thành theo hướng dẫn, nhận Lúa sau khi xác minh. Tối thiểu 90 giây - +500 Lúa - ⚡ Xác minh tự động - 🛡️ Chống gian lận</p>
@@ -103,11 +110,27 @@ body{background:#f5f7fa}
 <div class="task"><div><b>Link Traffic Việt</b><br><small>~90s - +350 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this)">Làm nhiệm vụ</button></div>
 <div class="task"><div><b>Direct GTraffic</b><br><small>~90s - +300 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this)">Làm nhiệm vụ</button></div>
 <div class="task"><div><b>Web2Min</b><br><small>~90s - +290 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this)">Làm nhiệm vụ</button></div>
+</div>
 
-<div class="card">
-<b>📱 Nhiệm vụ App</b>
-<p style="font-size:13px;color:#666;margin:6px 0">Tải app - Đăng ký - Nhận Lúa. Admin duyệt - +50.000 Lúa - 100 nhiệm vụ khả dụng</p>
-<button class="btn">Mở Offerwall ↗</button>
+<div id="tuyenref" class="card">
+<b>👥 Tuyển Ref</b>
+<p style="margin:8px 0;font-size:14px">Tổng Ref: 0 người | Đang hoạt động: 0 | Tổng hoa hồng: +0 Lúa</p>
+<p style="font-size:13px;color:#666">Mã giới thiệu: KL14907749368E - Nhận 5% hoa hồng từ Ref!</p>
+<button class="btn">Sao chép Link giới thiệu</button>
+</div>
+
+<div id="phucloi" class="card">
+<b>🎁 Phúc lợi</b>
+<p style="margin:8px 0;font-size:14px">Điểm danh hôm nay: Chưa điểm danh - +50 Lúa</p>
+<button class="btn btn-green">Điểm danh ngay +50 Lúa</button>
+<p style="margin-top:10px;font-size:13px">Vòng quay may mắn: Còn 1 lượt - Quay ngay!</p>
+</div>
+
+<div id="ruttien" class="card">
+<b>💰 Rút tiền</b>
+<p style="margin:8px 0;font-size:14px">Số dư: 0 Lúa | Đang chờ: 0 Lúa | Đã rút: 0 Lúa</p>
+<p style="font-size:13px;color:#666">Rút từ 5.000 đến 30.000 Lúa phí 2.000 Lúa. Trên 30.000 miễn phí.</p>
+<button class="btn btn-green">Xác nhận rút tiền</button>
 </div>
 
 <div class="verify" id="verify" style="display:none">
@@ -123,7 +146,7 @@ body{background:#f5f7fa}
 <b style="color:#16a34a">✅ Xác minh thành công - Đã cộng +400 Lúa vào ví!</b>
 </div>
 
-<div class="card">
+<div id="lichsu" class="card">
 <b>📜 Lịch sử</b>
 <p style="margin:8px 0;font-size:14px">Tìm kiếm: <input placeholder="Tìm theo tên nhiệm vụ, mã lệnh..." style="padding:8px;border:1px solid #ddd;border-radius:8px;width:100%;margin-top:6px"></p>
 <p style="font-size:13px;color:#666">Chưa có giao dịch nào - Giao dịch của bạn sẽ xuất hiện tại đây.</p>
@@ -136,13 +159,12 @@ body{background:#f5f7fa}
 </div>
 
 <div class="card">
-<b>💰 Rút tiền</b>
-<p style="margin:8px 0;font-size:14px">Số dư: 0 Lúa | Đang chờ: 0 Lúa | Đã rút: 0 Lúa</p>
-<p style="font-size:13px;color:#666">Rút từ 5.000 đến 30.000 Lúa phí 2.000 Lúa. Trên 30.000 miễn phí.</p>
-<button class="btn btn-green">Xác nhận rút tiền</button>
+<b>📱 Nhiệm vụ App</b>
+<p style="font-size:13px;color:#666;margin:6px 0">Tải app - Đăng ký - Nhận Lúa. Admin duyệt - +50.000 Lúa - 100 nhiệm vụ khả dụng</p>
+<button class="btn">Mở Offerwall ↗</button>
 </div>
 
-<div class="card">
+<div id="hoso" class="card">
 <b>👤 Hồ sơ</b>
 <p style="margin:8px 0;font-size:14px">Tên: hoanghungjk - Email: hoanghungjk@gmail.com - SĐT: Chưa cập nhật</p>
 <p><b>Cài đặt:</b> 🔔 Bật thông báo | 🌙 Chế độ tối | 🇻🇳 Tiếng Việt</p>
@@ -152,6 +174,21 @@ body{background:#f5f7fa}
 <div style="text-align:center;padding:16px;color:#999;font-size:12px">© 2026 KIẾM LÚA ONLINE - Làm nhiệm vụ • Nhận Lúa • Tích lũy • Đổi thưởng</div>
 
 <script>
+function moMenu(){
+  document.getElementById('menu').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function dongMenu(){
+  document.getElementById('menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function diDen(id){
+  dongMenu();
+  setTimeout(function(){
+    var el = document.getElementById(id);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }, 100);
+}
 function xacMinh(btn){
   document.getElementById('verify').style.display='block';
   document.getElementById('verify').scrollIntoView({behavior:'smooth'});
