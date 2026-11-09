@@ -59,6 +59,7 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .spinner{width:22px;height:22px;border:3px solid #e5e7eb;border-top:3px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+.dot{width:12px;height:12px;background:#334155;border-radius:50%;display:inline-block}
 </style>
 </head>
 <body>
@@ -105,11 +106,12 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="tab"><button class="active" onclick="showPage('link')">🔗 Link</button><button onclick="showPage('app')">📱 App</button></div>
 <div class="grid"><div class="mini">💰<b>+0 Lúa</b><span>Hôm nay</span></div><div class="mini">📋<b>0 Lúa</b><span>Tổng vượt link</span></div><div class="mini">✅<b>0</b><span>NV đã làm</span></div><div class="mini">⏰<b>03:16:17</b><span>Reset sau</span></div></div>
 <div class="card"><b>🌐 IP hiện tại: 14.233.85.284</b><p style="font-size:13px;color:#666;margin:6px 0">Quota chặn theo mã thiết bị và IP — đổi IP/VPN/Proxy không giúp vượt giới hạn.</p><p style="font-size:13px">📱 Đã định danh thiết bị b74a9a6015...</p></div>
-<div class="task"><div><b>Vượt Link4M</b><br><small>~90s - +400 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Vượt Link4M',400,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Link Traffic Việt</b><br><small>~90s - +350 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Link Traffic Việt',350,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Direct GTraffic</b><br><small>~90s - +300 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Direct GTraffic',300,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Web2Min</b><br><small>~90s - +290 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Web2Min',290,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Traffic24H</b><br><small>~90s - +250 Lúa - Còn 1/1 lượt</small></div><button onclick="lamNhiemVu('Traffic24H',250,'link')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Vượt Link4M</b><br><small>~90s - +400 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Vượt Link4M',400,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Link Traffic Việt</b><br><small>~90s - +350 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Link Traffic Việt',350,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Direct GTraffic</b><br><small>~90s - +300 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Direct GTraffic',300,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Web2Min</b><br><small>~90s - +290 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Web2Min',290,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Traffic24H</b><br><small>~90s - +250 Lúa - Còn 1/1 lượt</small></div><button onclick="lamNhiemVu('Traffic24H',250,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Link BBMKTS (CHECK)</b><br><small>~90s - +500 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Link BBMKTS (CHECK)',500,'link','https://link4m.com')">Làm nhiệm vụ</button></div>
 </div>
 
 <div id="app" class="page">
@@ -117,10 +119,10 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="tab"><button onclick="showPage('link')">🔗 Link</button><button class="active-app" onclick="showPage('app')">📱 App</button></div>
 <div class="grid"><div class="mini">📱<b>100</b><span>Nhiệm vụ App</span></div><div class="mini">💰<b>+50.000</b><span>Lúa / App</span></div><div class="mini">✅<b>0</b><span>Đã duyệt</span></div><div class="mini">⏳<b>0</b><span>Chờ duyệt</span></div></div>
 <div class="card"><b>🧩 Offerwall</b><p style="font-size:13px;color:#666;margin:6px 0">Xtask +2.400 Lúa<br>No1Share +2.200 Lúa<br>Lay ma +600 Lúa<br>Vietuser +520 Lúa</p><button class="btn">Mở Offerwall ↗</button></div>
-<div class="task"><div><b>Tải App - Momo</b><br><small>Đăng ký + Xác minh - +50.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - Momo',50000,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - ZaloPay</b><br><small>Đăng ký + Liên kết - +45.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - ZaloPay',45000,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - TikTok Lite</b><br><small>Đăng ký + Xem 5 phút - +30.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - TikTok Lite',30000,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - 【entity-Shopee¦canonical_name=Shopee】</b><br><small>Đăng ký + Mua 1 đơn - +25.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - 【entity-Shopee¦canonical_name=Shopee】',25000,'app')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - Momo</b><br><small>Đăng ký + Xác minh - +50.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - Momo',50000,'app','https://t.me/kiemluaonline')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - ZaloPay</b><br><small>Đăng ký + Liên kết - +45.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - ZaloPay',45000,'app','https://t.me/kiemluaonline')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - TikTok Lite</b><br><small>Đăng ký + Xem 5 phút - +30.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - TikTok Lite',30000,'app','https://t.me/kiemluaonline')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - 【entity-Shopee¦canonical_name=Shopee】</b><br><small>Đăng ký + Mua 1 đơn - +25.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - 【entity-Shopee¦canonical_name=Shopee】',25000,'app','https://t.me/kiemluaonline')">Làm nhiệm vụ</button></div>
 </div>
 
 <div id="tuyenref" class="page">
@@ -175,17 +177,19 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 </div>
 </div>
 
-<!-- POPUP KIỂM TRA - CHỈ HIỆN DÒNG ĐEN, GIẤU HẾT CÁI VÀNG -->
+<!-- POPUP 2 BƯỚC - GIỐNG HÌNH BẠN GỬI -->
 <div id="taskCheckModal" class="task-modal" onclick="if(event.target==this) closeTaskModal()">
 <div class="task-box">
 <div style="padding:20px 20px 16px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #f1f5f9">
 <div style="width:48px;height:48px;background:#f1f5f9;border-radius:14px;display:flex;align-items:center;justify-content:center"><span id="taskCheckIcon" class="spinner"></span></div>
-<div><b id="taskCheckTitle" style="font-size:20px">Vượt Link4M</b><p id="taskCheckSub" style="color:#64748b;font-size:14px;margin-top:2px">Đang kiểm tra nhiệm vụ...</p></div>
+<div style="flex:1"><b id="taskCheckTitle" style="font-size:20px">Vượt Link4M</b><p id="taskCheckSub" style="color:#64748b;font-size:14px;margin-top:2px">Đang kiểm tra nhiệm vụ...</p></div>
+<div onclick="closeTaskModal()" style="font-size:22px;color:#94a3b8;cursor:pointer">×</div>
 </div>
 <div style="padding:16px 20px 0">
-<!-- CHỈ HIỆN ĐÚNG DÒNG NÀY - ĐÃ XÓA HẾT DANH SÁCH KIỂM TRA -->
+<!-- BƯỚC 1: Chờ phản hồi -->
 <div id="taskCheckWaiting" style="background:#eff6ff;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:center;color:#1d4ed8;font-weight:bold;font-size:14px"><span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.</div>
-<div id="taskCheckAction" style="display:none;margin-top:14px"></div>
+<!-- BƯỚC 2: Đã khởi tạo - Giống hình bạn gửi -->
+<div id="taskCheckSuccess" style="display:none;background:#f0fdf4;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start;color:#166534;font-weight:bold;font-size:14px;line-height:1.5"><span style="font-size:18px">✓</span><span>Lượt thực hiện đã được tạo từ backend.<br>Đang chuyển tới bước thực hiện...</span></div>
 </div>
 </div>
 </div>
@@ -215,35 +219,34 @@ function showPage(id){
   }
   window.scrollTo(0,0);
 }
-// ===== ĐÃ SỬA: Chỉ hiện dòng đen, giấu hết kiểm tra ở trong (không hiện ra) =====
-function lamNhiemVu(ten, tien, loai){
+// ===== ĐÃ SỬA: 2 BƯỚC GIỐNG WEB HỌ - XONG TỰ CHUYỂN HƯỚNG =====
+function lamNhiemVu(ten, tien, loai, link){
   var modal=document.getElementById('taskCheckModal');
   modal.classList.add('show');
+  // BƯỚC 1: Đang kiểm tra
   document.getElementById('taskCheckTitle').innerText=ten;
   document.getElementById('taskCheckSub').innerText='Đang kiểm tra nhiệm vụ...';
   document.getElementById('taskCheckIcon').className='spinner';
   document.getElementById('taskCheckIcon').innerText='';
   document.getElementById('taskCheckIcon').style.fontSize='';
-  // Chỉ hiện dòng đen
   document.getElementById('taskCheckWaiting').style.display='flex';
   document.getElementById('taskCheckWaiting').innerHTML='<span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.';
-  document.getElementById('taskCheckAction').style.display='none';
+  document.getElementById('taskCheckSuccess').style.display='none';
 
-  // Kiểm tra ở trong (không hiện ra cho khách thấy): Mã máy, IP, Proxy, Quota, Tài khoản
-  // Giả lập 2.5 giây để hệ thống kiểm tra xong
+  // Sau 2.5s -> BƯỚC 2: Đã khởi tạo giống hình bạn gửi
   setTimeout(function(){
-    document.getElementById('taskCheckWaiting').style.display='none';
-    document.getElementById('taskCheckSub').innerText='Kiểm tra thành công!';
+    document.getElementById('taskCheckTitle').innerText=ten;
+    document.getElementById('taskCheckSub').innerText='Đã khởi tạo nhiệm vụ';
     document.getElementById('taskCheckIcon').className='';
-    document.getElementById('taskCheckIcon').innerText='✅';
-    document.getElementById('taskCheckIcon').style.fontSize='24px';
-    let action=document.getElementById('taskCheckAction');
-    action.style.display='block';
-    if(loai==='app'){
-      action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn sẽ được chuyển tới trang tải App. Sau khi Admin duyệt, +'+tien.toLocaleString()+' Lúa sẽ được cộng!</p><button class="btn" style="background:#7c3aed" onclick="window.open(\'https://t.me/kiemluaonline\',\'_blank\');closeTaskModal()">Tiếp tục làm nhiệm vụ App ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
-    } else {
-      action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn có 90 giây để vượt link. Hoàn thành đủ 90 giây, +'+tien.toLocaleString()+' Lúa sẽ tự động cộng!</p><button class="btn btn-green" onclick="window.open(\'https://link4m.com\',\'_blank\');closeTaskModal()">Mở Link để làm nhiệm vụ ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
-    }
+    document.getElementById('taskCheckIcon').innerHTML='<span class="dot"></span>';
+    document.getElementById('taskCheckWaiting').style.display='none';
+    document.getElementById('taskCheckSuccess').style.display='flex';
+
+    // Sau 1.5s nữa -> TỰ ĐỘNG chuyển hướng tới Link
+    setTimeout(function(){
+      closeTaskModal();
+      window.open(link, '_blank');
+    }, 1500);
   }, 2500);
 }
 function closeTaskModal(){ document.getElementById('taskCheckModal').classList.remove('show'); }
