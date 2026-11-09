@@ -42,7 +42,6 @@ body{background:#f5f7fa}
 .t-rut{background:linear-gradient(135deg,#0d9488,#14b8a6)}
 .t-lichsu{background:linear-gradient(135deg,#334155,#475569)}
 .t-hoso{background:linear-gradient(135deg,#db2777,#f472b6)}
-.verify{background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:12px;margin:12px}
 .tab{display:flex;gap:8px;margin:12px}
 .tab button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:bold;background:#e2e8f0}
 .tab button.active{background:#2563eb;color:#fff}
@@ -54,6 +53,15 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30;align-items:flex-end;justify-content:center}
 .modal.show{display:flex}
 .modal-box{background:#fff;width:100%;max-width:500px;padding:18px;border-radius:20px 20px 0 0}
+/* POPUP KIỂM TRA NHIỆM VỤ - GIỐNG WEB HỌ */
+.task-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;align-items:flex-end;justify-content:center}
+.task-modal.show{display:flex}
+.task-box{background:#fff;width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:0 0 20px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.spinner{width:22px;height:22px;border:3px solid #e5e7eb;border-top:3px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.check-line{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
+.check-line b{color:#16a34a}
 </style>
 </head>
 <body>
@@ -62,7 +70,6 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="header">
 <button onclick="moMenu()">☰</button>
 <div class="balance">💰 0 Lúa</div>
-<!-- ĐÃ SỬA: Chưa đăng nhập thì KHÔNG có logo H, chỉ có nút Telegram + Đăng nhập + Chuông -->
 <div style="display:flex;gap:8px;align-items:center">
 <a class="tele-btn" href="https://t.me/kiemluaonline" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.95 6.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> Telegram</a>
 <span>🔔</span>
@@ -84,17 +91,15 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <a id="m-lichsu" onclick="showPage('lichsu')">📜 Lịch sử</a>
 <a id="m-hoso" onclick="showPage('hoso')">👤 Hồ sơ</a>
 <a onclick="dongMenu()">❌ Đóng</a>
-<div style="background:#229ED9;padding:12px;border-radius:12px;margin-top:16px"> <b>Tham gia Nhóm Telegram</b><br><small>Nhận thông báo rút tiền + nhiệm vụ mới</small><br><button style="background:#fff;color:#229ED9;border:none;padding:8px;border-radius:8px;margin-top:8px;width:100%;font-weight:bold" onclick="window.open('https://t.me/kiemluaonline')">Tham gia ngay</button></div>
+<div style="background:#229ED9;padding:12px;border-radius:12px;margin-top:16px"><b>Tham gia Nhóm Telegram</b><br><small>Nhận thông báo rút tiền + nhiệm vụ mới</small><br><button style="background:#fff;color:#229ED9;border:none;padding:8px;border-radius:8px;margin-top:8px;width:100%;font-weight:bold" onclick="window.open('https://t.me/kiemluaonline')">Tham gia ngay</button></div>
 </div>
 
-<!-- TỔNG QUAN -->
 <div id="tongquan" class="page active">
 <div class="page-title t-tongquan"><b style="font-size:22px">📊 Tổng quan</b><p style="font-size:13px;opacity:.9;margin-top:4px">Xem nhanh số dư, tiến độ và thu nhập</p></div>
 <div class="card" style="background:#dcfce7;border:1px solid #86efac"><b>✅ RÚT TIỀN THÀNH CÔNG</b><p style="margin:8px 0;font-size:14px;color:#166534">TK 99******00 rút thành công - 5.000 đ - 4 giờ trước</p></div>
 <div class="card" style="background:linear-gradient(135deg,#1e293b,#7c3aed);color:#fff"><p>Số dư khả dụng 💰</p><h2 style="font-size:32px;margin:8px 0">0 Lúa</h2><p style="font-size:13px;opacity:.8">Sẵn sàng cho nhiệm vụ tiếp theo</p><button class="btn" onclick="showPage('ruttien')">Rút tiền ↗</button></div>
 <div class="card"><b>🎯 Còn thiếu để rút</b><h2 style="margin:8px 0">5.000 Lúa</h2><div style="height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden"><div style="height:100%;background:#2563eb;width:0%"></div></div><p style="margin-top:8px">0 / 5.000 Lúa (0%) - Chưa đủ điều kiện rút</p></div>
 <div class="grid"><div class="mini">✅<b>0</b><span>Đã hoàn thành</span></div><div class="mini">⏰<b>0</b><span>Đang thực hiện</span></div><div class="mini">📋<b>0</b><span>Tổng đã thực hiện</span></div><div class="mini">💰<b>+0 Lúa</b><span>Hôm nay</span></div></div>
-<div class="card"><b>📈 Thu nhập 7 ngày</b><p style="font-size:13px;color:#666;margin:6px 0">Tổng: 0 Lúa | Trung bình: 0 Lúa/ngày</p><p style="text-align:center;color:#999">📊 Chưa có dữ liệu</p></div>
 <div class="card"><b>📋 Nhiệm vụ gần đây</b><p style="font-size:13px;color:#666;margin:6px 0">Chưa có nhiệm vụ nào.</p><button class="btn" onclick="showPage('link')">Khám phá nhiệm vụ Link ↗</button></div>
 </div>
 
@@ -103,13 +108,12 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="page-title t-link"><b style="font-size:22px">🔗 Nhiệm vụ Link</b><p style="font-size:13px;opacity:.9;margin-top:4px">Vượt Link - 90 giây - Nhận Lúa sau khi xác minh</p></div>
 <div class="tab"><button class="active" onclick="showPage('link')">🔗 Link</button><button onclick="showPage('app')">📱 App</button></div>
 <div class="grid"><div class="mini">💰<b>+0 Lúa</b><span>Hôm nay</span></div><div class="mini">📋<b>0 Lúa</b><span>Tổng vượt link</span></div><div class="mini">✅<b>0</b><span>NV đã làm</span></div><div class="mini">⏰<b>03:16:17</b><span>Reset sau</span></div></div>
-<div class="card"><b>🌐 IP hiện tại: 113.184.242.171</b><p style="font-size:13px;color:#666;margin:6px 0">Quota chặn theo mã thiết bị và IP — đổi IP/VPN/4G không giúp vượt giới hạn.</p><p style="font-size:13px">📱 Đã định danh thiết bị b74a9a6015...</p></div>
-<div class="task"><div><b>Vượt Link4M</b><br><small>~90s - +400 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Link Traffic Việt</b><br><small>~90s - +350 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Direct GTraffic</b><br><small>~90s - +300 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Web2Min</b><br><small>~90s - +290 Lúa - Còn 2/2 lượt</small></div><button onclick="xacMinh(this,'link')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Traffic24H</b><br><small>~90s - +250 Lúa - Còn 1/1 lượt</small></div><button onclick="xacMinh(this,'link')">Làm nhiệm vụ</button></div>
-<div id="verifyBoxLink"></div>
+<div class="card"><b>🌐 IP hiện tại: 14.233.85.284</b><p style="font-size:13px;color:#666;margin:6px 0">Quota chặn theo mã thiết bị và IP — đổi IP/VPN/Proxy không giúp vượt giới hạn.</p><p style="font-size:13px">📱 Đã định danh thiết bị b74a9a6015...</p></div>
+<div class="task"><div><b>Vượt Link4M</b><br><small>~90s - +400 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Vượt Link4M',400,'link')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Link Traffic Việt</b><br><small>~90s - +350 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Link Traffic Việt',350,'link')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Direct GTraffic</b><br><small>~90s - +300 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Direct GTraffic',300,'link')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Web2Min</b><br><small>~90s - +290 Lúa - Còn 2/2 lượt</small></div><button onclick="lamNhiemVu('Web2Min',290,'link')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Traffic24H</b><br><small>~90s - +250 Lúa - Còn 1/1 lượt</small></div><button onclick="lamNhiemVu('Traffic24H',250,'link')">Làm nhiệm vụ</button></div>
 </div>
 
 <!-- APP -->
@@ -118,95 +122,47 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="tab"><button onclick="showPage('link')">🔗 Link</button><button class="active-app" onclick="showPage('app')">📱 App</button></div>
 <div class="grid"><div class="mini">📱<b>100</b><span>Nhiệm vụ App</span></div><div class="mini">💰<b>+50.000</b><span>Lúa / App</span></div><div class="mini">✅<b>0</b><span>Đã duyệt</span></div><div class="mini">⏳<b>0</b><span>Chờ duyệt</span></div></div>
 <div class="card"><b>🧩 Offerwall</b><p style="font-size:13px;color:#666;margin:6px 0">Xtask +2.400 Lúa<br>No1Share +2.200 Lúa<br>Lay ma +600 Lúa<br>Vietuser +520 Lúa</p><button class="btn">Mở Offerwall ↗</button></div>
-<div class="task"><div><b>Tải App - Momo</b><br><small>Đăng ký + Xác minh - +50.000 Lúa</small></div><button onclick="xacMinh(this,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - ZaloPay</b><br><small>Đăng ký + Liên kết - +45.000 Lúa</small></div><button onclick="xacMinh(this,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - TikTok Lite</b><br><small>Đăng ký + Xem 5 phút - +30.000 Lúa</small></div><button onclick="xacMinh(this,'app')">Làm nhiệm vụ</button></div>
-<div class="task"><div><b>Tải App - 【entity-Shopee¦canonical_name=Shopee】</b><br><small>Đăng ký + Mua 1 đơn - +25.000 Lúa</small></div><button onclick="xacMinh(this,'app')">Làm nhiệm vụ</button></div>
-<div id="verifyBoxApp"></div>
+<div class="task"><div><b>Tải App - Momo</b><br><small>Đăng ký + Xác minh - +50.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - Momo',50000,'app')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - ZaloPay</b><br><small>Đăng ký + Liên kết - +45.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - ZaloPay',45000,'app')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - TikTok Lite</b><br><small>Đăng ký + Xem 5 phút - +30.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - TikTok Lite',30000,'app')">Làm nhiệm vụ</button></div>
+<div class="task"><div><b>Tải App - 【entity-Shopee¦canonical_name=Shopee】</b><br><small>Đăng ký + Mua 1 đơn - +25.000 Lúa</small></div><button onclick="lamNhiemVu('Tải App - 【entity-Shopee¦canonical_name=Shopee】',25000,'app')">Làm nhiệm vụ</button></div>
 </div>
 
-<!-- TUYỂN REF -->
 <div id="tuyenref" class="page">
 <div class="page-title t-ref"><b style="font-size:22px">👥 Tuyển Ref</b><p style="font-size:13px;opacity:.9;margin-top:4px">Mời bạn bè - Nhận 5% hoa hồng mãi mãi</p></div>
-<div class="card" style="background:linear-gradient(135deg,#1e293b,#7c3aed);color:#fff"><p>Tổng Ref</p><h2 style="font-size:32px;margin:8px 0">0 người</h2><p>Bạn bè đã đăng ký qua link của bạn</p></div>
+<div class="card" style="background:linear-gradient(135deg,#1e293b,#7c3aed);color:#fff"><p>Tổng Ref</p><h2 style="font-size:32px;margin:8px 0">0 người</h2></div>
 <div class="grid"><div class="mini">👥<b>0</b><span>Đang hoạt động</span></div><div class="mini">💰<b>+0 Lúa</b><span>Tổng hoa hồng</span></div></div>
 <div class="card"><b>Mã giới thiệu của bạn</b><p style="margin:8px 0;font-size:18px;font-weight:bold">KL14907749368E</p><button class="btn">Sao chép mã</button><p style="margin-top:10px;font-size:13px;color:#666">Link: https://kiemluaonline.github.io/kiemluaonline/register?ref=KL14907749368E</p><button class="btn">Sao chép Link</button></div>
-<div class="card"><b>Lịch sử hoa hồng</b><p style="font-size:13px;color:#666">Chưa có hoa hồng nào</p></div>
 </div>
 
-<!-- PHÚC LỢI -->
 <div id="phucloi" class="page">
 <div class="page-title t-phucloi"><b style="font-size:22px">🎁 Phúc lợi</b><p style="font-size:13px;opacity:.9;margin-top:4px">Điểm danh, mốc thưởng, vòng quay mỗi ngày</p></div>
 <div class="card" style="background:linear-gradient(135deg,#1e293b,#ea580c);color:#fff"><p>Điểm danh hôm nay</p><h2 style="font-size:28px;margin:8px 0">Chưa điểm danh</h2><p>+50 Lúa mỗi ngày</p><button class="btn btn-green">Điểm danh ngay +50 Lúa</button></div>
 <div class="grid"><div class="mini">🎯<b>0/3</b><span>Mốc đã nhận</span></div><div class="mini">🎡<b>Còn 1 lượt</b><span>Vòng quay</span></div></div>
-<div class="card"><b>Tiến độ nhiệm vụ hôm nay</b><p style="margin:8px 0;font-size:14px">0/20 nhiệm vụ<br>5 NV: 0/5 - +50 Lúa - Chưa đạt<br>10 NV: 0/10 - +100 Lúa - Chưa đạt<br>20 NV: 0/20 - +300 Lúa - Chưa đạt</p></div>
 <div class="card"><b>🎡 Vòng quay may mắn</b><p style="font-size:13px;color:#666;margin:6px 0">10 Lúa / 50 Lúa / 100 Lúa / 200 Lúa / 5.000 Lúa / 10.000 Lúa</p><button class="btn">Quay ngay</button></div>
 <div class="card"><b>🏆 Bảng xếp hạng</b><p style="margin:8px 0">1. HoangHung - 19.150 Lúa<br>2. Mai - 12.500 Lúa<br>3. Tub - 8.200 Lúa<br><b>Bạn - Hạng 125 - 0 Lúa</b></p></div>
 </div>
 
-<!-- RÚT TIỀN - ĐÃ SỬA HOÀN TOÀN -->
 <div id="ruttien" class="page">
 <div class="page-title t-rut"><b style="font-size:22px">💰 Rút tiền</b><p style="font-size:13px;opacity:.9;margin-top:4px">Rút từ 5.000 Lúa - Tiền về Ngân hàng / ZaloPay / Momo</p></div>
 <div class="card"><b>Chưa liên kết Telegram</b><p style="font-size:13px;color:#666;margin:6px 0">Liên kết ngay để nhận thông báo trạng thái rút tiền</p><button class="btn" style="background:#229ED9">Liên kết Telegram</button></div>
 <div class="card" style="background:linear-gradient(135deg,#1e293b,#0d9488);color:#fff"><p>Số dư khả dụng</p><h2 style="font-size:32px;margin:8px 0">0 Lúa</h2><p>Đang chờ: 0 Lúa | Đã rút: 0 Lúa | Từ 30k trở lên Miễn phí</p></div>
-
-<!-- ĐÃ SỬA: Chưa có ngân hàng nào, có nút Thêm -->
-<div class="card">
-<b>🏦 Tài khoản nhận tiền</b>
-<div id="bankEmpty">
-<p style="font-size:14px;color:#666;margin:8px 0">Bạn chưa có tài khoản nhận tiền nào.<br>Vui lòng thêm ngân hàng để rút tiền.</p>
-<button class="btn btn-outline" onclick="openBank()">+ Thêm tài khoản nhận tiền</button>
-</div>
-<div id="bankAdded" style="display:none">
-<p style="font-size:14px;margin:8px 0" id="bankInfo"></p>
-<button class="btn btn-outline" onclick="openBank()">Đổi tài khoản</button>
-</div>
-</div>
-
-<!-- ĐÃ SỬA: Có ô nhập số tiền + nút chọn nhanh -->
-<div class="card">
-<b>💰 Số tiền muốn rút</b>
-<p style="font-size:13px;color:#666;margin:6px 0">Nhập số Lúa muốn rút (Tối thiểu 5.000 Lúa)</p>
-<input id="rutTienInput" type="number" placeholder="Ví dụ: 10000" oninput="tinhPhi()">
-<div style="margin:8px 0">
-<span class="chip" onclick="chonTien(5000,this)">5.000</span>
-<span class="chip" onclick="chonTien(10000,this)">10.000</span>
-<span class="chip" onclick="chonTien(20000,this)">20.000</span>
-<span class="chip" onclick="chonTien(30000,this)">30.000</span>
-<span class="chip" onclick="chonTien(50000,this)">50.000</span>
-<span class="chip" onclick="chonTien(0,this)">Tối đa</span>
-</div>
-<p id="phiText" style="font-size:13px;color:#666;margin:6px 0">Rút 5.000 - 30.000 phí 2.000 Lúa. Trên 30.000 miễn phí.</p>
-<p id="thucNhan" style="font-size:14px;font-weight:bold;color:#16a34a"></p>
-<button class="btn btn-green" onclick="rutTien()">Xác nhận rút tiền</button>
-<p id="rutMsg" style="font-size:13px;color:#dc2626;margin-top:8px"></p>
-</div>
-
+<div class="card"><b>🏦 Tài khoản nhận tiền</b><div id="bankEmpty"><p style="font-size:14px;color:#666;margin:8px 0">Bạn chưa có tài khoản nhận tiền nào.<br>Vui lòng thêm ngân hàng để rút tiền.</p><button class="btn btn-outline" onclick="openBank()">+ Thêm tài khoản nhận tiền</button></div><div id="bankAdded" style="display:none"><p style="font-size:14px;margin:8px 0" id="bankInfo"></p><button class="btn btn-outline" onclick="openBank()">Đổi tài khoản</button></div></div>
+<div class="card"><b>💰 Số tiền muốn rút</b><p style="font-size:13px;color:#666;margin:6px 0">Nhập số Lúa muốn rút (Tối thiểu 5.000 Lúa)</p><input id="rutTienInput" type="number" placeholder="Ví dụ: 10000" oninput="tinhPhi()"><div style="margin:8px 0"><span class="chip" onclick="chonTien(5000,this)">5.000</span><span class="chip" onclick="chonTien(10000,this)">10.000</span><span class="chip" onclick="chonTien(20000,this)">20.000</span><span class="chip" onclick="chonTien(30000,this)">30.000</span><span class="chip" onclick="chonTien(50000,this)">50.000</span><span class="chip" onclick="chonTien(0,this)">Tối đa</span></div><p id="phiText" style="font-size:13px;color:#666;margin:6px 0">Rút 5.000 - 30.000 phí 2.000 Lúa. Trên 30.000 miễn phí.</p><p id="thucNhan" style="font-size:14px;font-weight:bold;color:#16a34a"></p><button class="btn btn-green" onclick="rutTien()">Xác nhận rút tiền</button><p id="rutMsg" style="font-size:13px;color:#dc2626;margin-top:8px"></p></div>
 <div class="card"><b>Lịch sử rút tiền</b><p style="font-size:13px;color:#666">Chưa có yêu cầu rút tiền nào</p></div>
 </div>
 
-<!-- LỊCH SỬ -->
 <div id="lichsu" class="page">
 <div class="page-title t-lichsu"><b style="font-size:22px">📜 Lịch sử</b><p style="font-size:13px;opacity:.9;margin-top:4px">Tất cả giao dịch, nhiệm vụ và rút tiền</p></div>
 <div class="grid"><div class="mini">💰<b>+0 Lúa</b><span>Tổng thu</span></div><div class="mini">💸<b>0 Lúa</b><span>Tổng chi</span></div><div class="mini">📜<b>0</b><span>Giao dịch</span></div><div class="mini">📊<b>0</b><span>Nhiệm vụ</span></div></div>
 <div class="card"><b>📜 Lịch sử giao dịch</b><p style="margin:8px 0"><input placeholder="Tìm theo tên nhiệm vụ, mã lệnh..."></p><p style="font-size:13px;color:#666">Chưa có giao dịch nào</p></div>
-<div class="card"><b>Lịch sử làm nhiệm vụ</b><p style="font-size:13px;color:#666">Chưa có lịch sử làm nhiệm vụ</p></div>
-<div class="card"><b>Lịch sử rút tiền</b><p style="font-size:13px;color:#666">Chưa có lịch sử rút tiền</p></div>
 </div>
 
-<!-- HỒ SƠ - ĐÃ SỬA: Chưa đăng nhập thì không có H, không có ngân hàng sẵn -->
 <div id="hoso" class="page">
 <div class="page-title t-hoso"><b style="font-size:22px">👤 Hồ sơ</b><p style="font-size:13px;opacity:.9;margin-top:4px">Thông tin tài khoản, ngân hàng và bảo mật</p></div>
-<div class="card">
-<b>🔐 Chưa đăng nhập</b>
-<p style="font-size:14px;color:#666;margin:8px 0">Bạn chưa đăng nhập. Vui lòng đăng nhập để xem hồ sơ, liên kết ngân hàng và rút tiền.</p>
-<button class="btn">Đăng nhập</button>
-<button class="btn btn-green">Đăng ký tài khoản mới</button>
-<p style="font-size:13px;color:#666;margin-top:8px">Hoặc đăng nhập bằng Gmail: <button style="background:#fff;border:1px solid #ddd;padding:6px 12px;border-radius:8px">G Đăng nhập bằng Google</button></p>
-</div>
+<div class="card"><b>🔐 Chưa đăng nhập</b><p style="font-size:14px;color:#666;margin:8px 0">Bạn chưa đăng nhập. Vui lòng đăng nhập để xem hồ sơ, liên kết ngân hàng và rút tiền.</p><button class="btn">Đăng nhập</button><button class="btn btn-green">Đăng ký tài khoản mới</button><p style="font-size:13px;color:#666;margin-top:8px">Hoặc đăng nhập bằng Gmail: <button style="background:#fff;border:1px solid #ddd;padding:6px 12px;border-radius:8px">G Đăng nhập bằng Google</button></p></div>
 <div class="card"><b>🏦 Tài khoản nhận tiền</b><p style="font-size:14px;color:#666;margin:8px 0">Chưa có tài khoản nhận tiền.</p><button class="btn btn-outline" onclick="openBank()">+ Thêm tài khoản nhận tiền</button></div>
-<div class="card"><b>Bảo mật tài khoản</b><p style="font-size:13px;color:#666;margin:6px 0">Đăng nhập để đổi mật khẩu</p><input placeholder="Mật khẩu hiện tại" disabled><input placeholder="Mật khẩu mới (Ít nhất 8 ký tự)" disabled><input placeholder="Xác nhận mật khẩu mới" disabled><button class="btn" disabled>Đổi mật khẩu</button></div>
-<div class="card"><b>Cài đặt</b><p style="margin:8px 0">🔔 Bật thông báo | 🌙 Chế độ tối | 🇻🇳 Tiếng Việt</p><b>Hỗ trợ</b><p style="margin:8px 0">💬 Chat với Admin | ❓ FAQ | 📖 Hướng dẫn</p></div>
+<div class="card"><b>Bảo mật tài khoản</b><p style="font-size:13px;color:#666;margin:6px 0">Đăng nhập để đổi mật khẩu</p><input placeholder="Mật khẩu hiện tại" disabled><input placeholder="Mật khẩu mới" disabled><input placeholder="Xác nhận mật khẩu mới" disabled><button class="btn" disabled>Đổi mật khẩu</button></div>
 </div>
 
 <!-- POPUP THÊM NGÂN HÀNG -->
@@ -219,9 +175,24 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <label style="font-size:13px;font-weight:bold">Số tài khoản / SĐT ví</label>
 <input id="bankNumber" placeholder="Ví dụ: 0123456789">
 <label style="font-size:13px;font-weight:bold">Tên chủ tài khoản</label>
-<input id="bankHolder" placeholder="Ví dụ: HOANG A HUNG (viết hoa, không dấu)">
+<input id="bankHolder" placeholder="Ví dụ: HOANG A HUNG">
 <button class="btn btn-green" onclick="saveBank()">Lưu tài khoản</button>
 <button class="btn btn-outline" onclick="closeBank()">Hủy</button>
+</div>
+</div>
+
+<!-- POPUP KIỂM TRA NHIỆM VỤ - GIỐNG HÌNH BẠN GỬI -->
+<div id="taskCheckModal" class="task-modal" onclick="if(event.target==this) closeTaskModal()">
+<div class="task-box">
+<div style="padding:20px 20px 16px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #f1f5f9">
+<div style="width:48px;height:48px;background:#f1f5f9;border-radius:14px;display:flex;align-items:center;justify-content:center"><span id="taskCheckIcon" class="spinner"></span></div>
+<div><b id="taskCheckTitle" style="font-size:20px">Vượt Link4M</b><p id="taskCheckSub" style="color:#64748b;font-size:14px;margin-top:2px">Đang kiểm tra nhiệm vụ...</p></div>
+</div>
+<div style="padding:16px 20px 0">
+<div id="taskCheckWaiting" style="background:#eff6ff;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:center;color:#1d4ed8;font-weight:bold;font-size:14px"><span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.</div>
+<div id="taskCheckList" style="margin-top:10px"></div>
+<div id="taskCheckAction" style="display:none;margin-top:14px"></div>
+</div>
 </div>
 </div>
 
@@ -250,14 +221,57 @@ function showPage(id){
   }
   window.scrollTo(0,0);
 }
-function xacMinh(btn,type){
-  var box = type==='app' ? document.getElementById('verifyBoxApp') : document.getElementById('verifyBoxLink');
-  var tien = type==='app' ? '+50.000 Lúa' : '+400 Lúa';
-  var loai = type==='app' ? 'App - Admin duyệt' : 'Link - 90 giây';
-  box.innerHTML='<div class="verify"><b>🔍 Đang xác minh nhiệm vụ...</b><p style="margin:8px 0;font-size:14px;line-height:1.8">✅ 1. Kiểm tra mã thiết bị - Đạt<br>✅ 2. Kiểm tra IP - Đạt<br>✅ 3. Kiểm tra Quota - Đạt<br>✅ 4. Kiểm tra thời gian / ' + loai + ' - Đạt<br>✅ 5. Kiểm tra click - Đạt<br>✅ 6. Tính toán thưởng - ' + tien + '</p><b style="color:#16a34a">✅ Xác minh thành công - Đã cộng ' + tien + '!</b></div>';
-  btn.innerText='Đã xác minh ✅';
+// ===== LÀM NHIỆM VỤ - GIỐNG WEB HỌ =====
+function lamNhiemVu(ten, tien, loai){
+  var modal=document.getElementById('taskCheckModal');
+  modal.classList.add('show');
+  document.getElementById('taskCheckTitle').innerText=ten;
+  document.getElementById('taskCheckSub').innerText='Đang kiểm tra nhiệm vụ...';
+  document.getElementById('taskCheckIcon').className='spinner';
+  document.getElementById('taskCheckWaiting').style.display='flex';
+  document.getElementById('taskCheckWaiting').innerHTML='<span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.';
+  document.getElementById('taskCheckList').innerHTML='';
+  document.getElementById('taskCheckAction').style.display='none';
+
+  var steps=[
+    {t:'Kiểm tra mã thiết bị - b74a9a6015...', ok:'Đạt - 1 thiết bị = 1 tài khoản'},
+    {t:'Kiểm tra IP - 14.233.85.284', ok:'Đạt - IP sạch'},
+    {t:'Kiểm tra Proxy / VPN', ok:'Đạt - Không dùng Proxy / VPN'},
+    {t:'Kiểm tra Quota - 0/10 link hôm nay', ok:'Đạt - Còn lượt'},
+    {t:'Kiểm tra tài khoản', ok:'Đạt - Tài khoản hoạt động'}
+  ];
+  let i=0;
+  function nextStep(){
+    if(i<steps.length){
+      let s=steps[i];
+      let div=document.createElement('div');
+      div.className='check-line';
+      div.innerHTML='<span class="spinner" style="width:16px;height:16px;border-width:2px"></span> '+s.t+'...';
+      document.getElementById('taskCheckList').appendChild(div);
+      setTimeout(()=>{
+        div.innerHTML='✅ <span>'+s.t+' - <b>'+s.ok+'</b></span>';
+        i++; nextStep();
+      }, 700);
+    } else {
+      // Kiểm tra xong hết
+      document.getElementById('taskCheckWaiting').style.display='none';
+      document.getElementById('taskCheckSub').innerText='Kiểm tra thành công - Đã xác minh!';
+      document.getElementById('taskCheckIcon').innerText='✅';
+      document.getElementById('taskCheckIcon').className='';
+      document.getElementById('taskCheckIcon').style.fontSize='24px';
+      let action=document.getElementById('taskCheckAction');
+      action.style.display='block';
+      if(loai==='app'){
+        action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn sẽ được chuyển tới trang tải App. Sau khi Admin duyệt, +'+tien.toLocaleString()+' Lúa sẽ được cộng!</p><button class="btn" style="background:#7c3aed" onclick="window.open(\'https://t.me/kiemluaonline\',\'_blank\');closeTaskModal()">Tiếp tục làm nhiệm vụ App ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
+      } else {
+        action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn có 90 giây để vượt link. Hoàn thành đủ 90 giây, +'+tien.toLocaleString()+' Lúa sẽ tự động cộng!</p><button class="btn btn-green" onclick="window.open(\'https://link4m.com\',\'_blank\');closeTaskModal()">Mở Link để làm nhiệm vụ ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
+      }
+    }
+  }
+  nextStep();
 }
-// RÚT TIỀN - Ô NHẬP + PHÍ
+function closeTaskModal(){ document.getElementById('taskCheckModal').classList.remove('show'); }
+// RÚT TIỀN
 function chonTien(v,el){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
@@ -276,10 +290,9 @@ function rutTien(){
   var v=parseInt(document.getElementById('rutTienInput').value||'0');
   if(!v){ document.getElementById('rutMsg').innerText='❌ Vui lòng nhập số tiền cần rút!'; return; }
   if(v<5000){ document.getElementById('rutMsg').innerText='❌ Tối thiểu 5.000 Lúa mới rút được!'; return; }
-  if(!document.getElementById('bankAdded').style.display || document.getElementById('bankAdded').style.display==='none'){ document.getElementById('rutMsg').innerText='❌ Bạn chưa thêm tài khoản nhận tiền! Bấm + Thêm tài khoản trước!'; openBank(); return; }
+  if(!document.getElementById('bankAdded').style.display || document.getElementById('bankAdded').style.display==='none'){ document.getElementById('rutMsg').innerText='❌ Bạn chưa thêm tài khoản nhận tiền!'; openBank(); return; }
   document.getElementById('rutMsg').innerText='❌ Bạn đang có 0 Lúa - Chưa đủ để rút! Làm nhiệm vụ để kiếm Lúa!';
 }
-// THÊM NGÂN HÀNG
 function openBank(){ document.getElementById('bankModal').classList.add('show'); }
 function closeBank(){ document.getElementById('bankModal').classList.remove('show'); }
 function saveBank(){
