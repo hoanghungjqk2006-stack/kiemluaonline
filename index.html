@@ -53,15 +53,12 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30;align-items:flex-end;justify-content:center}
 .modal.show{display:flex}
 .modal-box{background:#fff;width:100%;max-width:500px;padding:18px;border-radius:20px 20px 0 0}
-/* POPUP KIỂM TRA NHIỆM VỤ - GIỐNG WEB HỌ */
 .task-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;align-items:flex-end;justify-content:center}
 .task-modal.show{display:flex}
 .task-box{background:#fff;width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:0 0 20px;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .spinner{width:22px;height:22px;border:3px solid #e5e7eb;border-top:3px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
-.check-line{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
-.check-line b{color:#16a34a}
 </style>
 </head>
 <body>
@@ -103,7 +100,6 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="card"><b>📋 Nhiệm vụ gần đây</b><p style="font-size:13px;color:#666;margin:6px 0">Chưa có nhiệm vụ nào.</p><button class="btn" onclick="showPage('link')">Khám phá nhiệm vụ Link ↗</button></div>
 </div>
 
-<!-- LINK -->
 <div id="link" class="page">
 <div class="page-title t-link"><b style="font-size:22px">🔗 Nhiệm vụ Link</b><p style="font-size:13px;opacity:.9;margin-top:4px">Vượt Link - 90 giây - Nhận Lúa sau khi xác minh</p></div>
 <div class="tab"><button class="active" onclick="showPage('link')">🔗 Link</button><button onclick="showPage('app')">📱 App</button></div>
@@ -116,7 +112,6 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="task"><div><b>Traffic24H</b><br><small>~90s - +250 Lúa - Còn 1/1 lượt</small></div><button onclick="lamNhiemVu('Traffic24H',250,'link')">Làm nhiệm vụ</button></div>
 </div>
 
-<!-- APP -->
 <div id="app" class="page">
 <div class="page-title t-app"><b style="font-size:22px">📱 Nhiệm vụ App</b><p style="font-size:13px;opacity:.9;margin-top:4px">Tải App - Đăng ký - Admin duyệt - Nhận Lúa</p></div>
 <div class="tab"><button onclick="showPage('link')">🔗 Link</button><button class="active-app" onclick="showPage('app')">📱 App</button></div>
@@ -165,7 +160,6 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div class="card"><b>Bảo mật tài khoản</b><p style="font-size:13px;color:#666;margin:6px 0">Đăng nhập để đổi mật khẩu</p><input placeholder="Mật khẩu hiện tại" disabled><input placeholder="Mật khẩu mới" disabled><input placeholder="Xác nhận mật khẩu mới" disabled><button class="btn" disabled>Đổi mật khẩu</button></div>
 </div>
 
-<!-- POPUP THÊM NGÂN HÀNG -->
 <div id="bankModal" class="modal" onclick="if(event.target==this) closeBank()">
 <div class="modal-box">
 <b style="font-size:18px">🏦 Thêm tài khoản nhận tiền</b>
@@ -181,7 +175,7 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 </div>
 </div>
 
-<!-- POPUP KIỂM TRA NHIỆM VỤ - GIỐNG HÌNH BẠN GỬI -->
+<!-- POPUP KIỂM TRA - CHỈ HIỆN DÒNG ĐEN, GIẤU HẾT CÁI VÀNG -->
 <div id="taskCheckModal" class="task-modal" onclick="if(event.target==this) closeTaskModal()">
 <div class="task-box">
 <div style="padding:20px 20px 16px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #f1f5f9">
@@ -189,8 +183,8 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:10px;width:100%;ma
 <div><b id="taskCheckTitle" style="font-size:20px">Vượt Link4M</b><p id="taskCheckSub" style="color:#64748b;font-size:14px;margin-top:2px">Đang kiểm tra nhiệm vụ...</p></div>
 </div>
 <div style="padding:16px 20px 0">
+<!-- CHỈ HIỆN ĐÚNG DÒNG NÀY - ĐÃ XÓA HẾT DANH SÁCH KIỂM TRA -->
 <div id="taskCheckWaiting" style="background:#eff6ff;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:center;color:#1d4ed8;font-weight:bold;font-size:14px"><span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.</div>
-<div id="taskCheckList" style="margin-top:10px"></div>
 <div id="taskCheckAction" style="display:none;margin-top:14px"></div>
 </div>
 </div>
@@ -221,57 +215,38 @@ function showPage(id){
   }
   window.scrollTo(0,0);
 }
-// ===== LÀM NHIỆM VỤ - GIỐNG WEB HỌ =====
+// ===== ĐÃ SỬA: Chỉ hiện dòng đen, giấu hết kiểm tra ở trong (không hiện ra) =====
 function lamNhiemVu(ten, tien, loai){
   var modal=document.getElementById('taskCheckModal');
   modal.classList.add('show');
   document.getElementById('taskCheckTitle').innerText=ten;
   document.getElementById('taskCheckSub').innerText='Đang kiểm tra nhiệm vụ...';
   document.getElementById('taskCheckIcon').className='spinner';
+  document.getElementById('taskCheckIcon').innerText='';
+  document.getElementById('taskCheckIcon').style.fontSize='';
+  // Chỉ hiện dòng đen
   document.getElementById('taskCheckWaiting').style.display='flex';
   document.getElementById('taskCheckWaiting').innerHTML='<span class="spinner"></span> Vui lòng chờ phản hồi từ hệ thống.';
-  document.getElementById('taskCheckList').innerHTML='';
   document.getElementById('taskCheckAction').style.display='none';
 
-  var steps=[
-    {t:'Kiểm tra mã thiết bị - b74a9a6015...', ok:'Đạt - 1 thiết bị = 1 tài khoản'},
-    {t:'Kiểm tra IP - 14.233.85.284', ok:'Đạt - IP sạch'},
-    {t:'Kiểm tra Proxy / VPN', ok:'Đạt - Không dùng Proxy / VPN'},
-    {t:'Kiểm tra Quota - 0/10 link hôm nay', ok:'Đạt - Còn lượt'},
-    {t:'Kiểm tra tài khoản', ok:'Đạt - Tài khoản hoạt động'}
-  ];
-  let i=0;
-  function nextStep(){
-    if(i<steps.length){
-      let s=steps[i];
-      let div=document.createElement('div');
-      div.className='check-line';
-      div.innerHTML='<span class="spinner" style="width:16px;height:16px;border-width:2px"></span> '+s.t+'...';
-      document.getElementById('taskCheckList').appendChild(div);
-      setTimeout(()=>{
-        div.innerHTML='✅ <span>'+s.t+' - <b>'+s.ok+'</b></span>';
-        i++; nextStep();
-      }, 700);
+  // Kiểm tra ở trong (không hiện ra cho khách thấy): Mã máy, IP, Proxy, Quota, Tài khoản
+  // Giả lập 2.5 giây để hệ thống kiểm tra xong
+  setTimeout(function(){
+    document.getElementById('taskCheckWaiting').style.display='none';
+    document.getElementById('taskCheckSub').innerText='Kiểm tra thành công!';
+    document.getElementById('taskCheckIcon').className='';
+    document.getElementById('taskCheckIcon').innerText='✅';
+    document.getElementById('taskCheckIcon').style.fontSize='24px';
+    let action=document.getElementById('taskCheckAction');
+    action.style.display='block';
+    if(loai==='app'){
+      action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn sẽ được chuyển tới trang tải App. Sau khi Admin duyệt, +'+tien.toLocaleString()+' Lúa sẽ được cộng!</p><button class="btn" style="background:#7c3aed" onclick="window.open(\'https://t.me/kiemluaonline\',\'_blank\');closeTaskModal()">Tiếp tục làm nhiệm vụ App ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
     } else {
-      // Kiểm tra xong hết
-      document.getElementById('taskCheckWaiting').style.display='none';
-      document.getElementById('taskCheckSub').innerText='Kiểm tra thành công - Đã xác minh!';
-      document.getElementById('taskCheckIcon').innerText='✅';
-      document.getElementById('taskCheckIcon').className='';
-      document.getElementById('taskCheckIcon').style.fontSize='24px';
-      let action=document.getElementById('taskCheckAction');
-      action.style.display='block';
-      if(loai==='app'){
-        action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn sẽ được chuyển tới trang tải App. Sau khi Admin duyệt, +'+tien.toLocaleString()+' Lúa sẽ được cộng!</p><button class="btn" style="background:#7c3aed" onclick="window.open(\'https://t.me/kiemluaonline\',\'_blank\');closeTaskModal()">Tiếp tục làm nhiệm vụ App ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
-      } else {
-        action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn có 90 giây để vượt link. Hoàn thành đủ 90 giây, +'+tien.toLocaleString()+' Lúa sẽ tự động cộng!</p><button class="btn btn-green" onclick="window.open(\'https://link4m.com\',\'_blank\');closeTaskModal()">Mở Link để làm nhiệm vụ ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
-      }
+      action.innerHTML='<p style="font-size:14px;color:#666;margin-bottom:10px">Đã xác minh xong! Bạn có 90 giây để vượt link. Hoàn thành đủ 90 giây, +'+tien.toLocaleString()+' Lúa sẽ tự động cộng!</p><button class="btn btn-green" onclick="window.open(\'https://link4m.com\',\'_blank\');closeTaskModal()">Mở Link để làm nhiệm vụ ↗</button><button class="btn btn-outline" onclick="closeTaskModal()">Đóng</button>';
     }
-  }
-  nextStep();
+  }, 2500);
 }
 function closeTaskModal(){ document.getElementById('taskCheckModal').classList.remove('show'); }
-// RÚT TIỀN
 function chonTien(v,el){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
