@@ -72,17 +72,17 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
   <script>
-// BƯỚC 2c - GIẤU CHỮ GIẢ + ÉP GOOGLE CHẠY THẬT
+// BƯỚC 2 CLEAN - GIẤU HỘP CAM ĐÚNG + GOOGLE THẬT
 document.addEventListener("DOMContentLoaded", function() {
-  // 1. Giấu 2 dòng chữ giả
-  document.querySelectorAll("div, p, span").forEach(function(el) {
-    var t = el.innerText || "";
-    if (t.includes("Bản xem trước") || t.includes("chưa được bật trong Supabase")) {
-      // Chỉ giấu cái hộp nhỏ nhất chứa chữ đó, không giấu cả trang
-      if (el.children.length < 5) el.style.display = "none";
-    }
-  });
-  // 2. Ép nút Google chạy thật, chặn code cũ
+  function giuHopCam() {
+    document.querySelectorAll("div").forEach(function(el) {
+      var t = (el.innerText || "").trim();
+      if (t.startsWith("Đăng nhập Google chưa được bật") && el.querySelectorAll("div").length <= 1) {
+        el.style.display = "none";
+      }
+    });
+  }
+  setInterval(giuHopCam, 500);
   document.querySelectorAll("button, a").forEach(function(nut) {
     var txt = (nut.innerText || "").toLowerCase();
     if (txt.includes("google")) {
