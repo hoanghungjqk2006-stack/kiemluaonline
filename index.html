@@ -71,6 +71,30 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+  <script>
+// BƯỚC 2c - GIẤU CHỮ GIẢ + ÉP GOOGLE CHẠY THẬT
+document.addEventListener("DOMContentLoaded", function() {
+  // 1. Giấu 2 dòng chữ giả
+  document.querySelectorAll("div, p, span").forEach(function(el) {
+    var t = el.innerText || "";
+    if (t.includes("Bản xem trước") || t.includes("chưa được bật trong Supabase")) {
+      // Chỉ giấu cái hộp nhỏ nhất chứa chữ đó, không giấu cả trang
+      if (el.children.length < 5) el.style.display = "none";
+    }
+  });
+  // 2. Ép nút Google chạy thật, chặn code cũ
+  document.querySelectorAll("button, a").forEach(function(nut) {
+    var txt = (nut.innerText || "").toLowerCase();
+    if (txt.includes("google")) {
+      nut.addEventListener("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.dangNhapGoogleThat();
+      }, true);
+    }
+  });
+});
+</script>
   <style>
 @font-face {
   font-family: "Optimistic";
