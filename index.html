@@ -120,6 +120,25 @@ setInterval(function() {
   });
 }, 800);
 </script>
+  <script>
+// BƯỚC 2g - BÁO CHO WEB CŨ BIẾT ĐÃ ĐĂNG NHẬP THẬT
+setInterval(async function() {
+  try {
+    var kq = await window.supabaseClient.auth.getSession();
+    if (!kq.data.session) return;
+    // Đã có phiên Supabase thật -> giấu bảng Đăng nhập
+    document.querySelectorAll("div").forEach(function(el) {
+      var t = (el.innerText || "");
+      if (t.includes("Chào mừng trở lại") && el.querySelectorAll("div").length <= 3) {
+        el.style.display = "none";
+      }
+      if (t.includes("Bản xem trước: đăng nhập chỉ diễn ra") && el.children.length <= 3) {
+        el.style.display = "none";
+      }
+    });
+  } catch (e) {}
+}, 1000);
+</script>
   <style>
 @font-face {
   font-family: "Optimistic";
