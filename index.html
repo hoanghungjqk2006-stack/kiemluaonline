@@ -95,6 +95,31 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+  <script>
+// BƯỚC 2f - ĐỢI REACT VẼ XONG RỒI MỚI GẮN GOOGLE
+setInterval(function() {
+  // 1. Giấu hộp cam, chỉ giấu khi nó chưa bị giấu để khỏi nháy
+  document.querySelectorAll("div").forEach(function(el) {
+    var t = (el.innerText || "").trim();
+    if (t.startsWith("Đăng nhập Google chưa được bật") && el.style.display !== "none") {
+      el.style.display = "none";
+    }
+  });
+  // 2. Gắn nút Google, gắn 1 lần thôi, gắn rồi thì thôi
+  document.querySelectorAll("button, a").forEach(function(nut) {
+    if (nut.dataset.daGanGoogle) return;
+    var txt = (nut.innerText || "").toLowerCase();
+    if (txt.includes("google")) {
+      nut.dataset.daGanGoogle = "1";
+      nut.addEventListener("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.dangNhapGoogleThat();
+      }, true);
+    }
+  });
+}, 800);
+</script>
   <style>
 @font-face {
   font-family: "Optimistic";
