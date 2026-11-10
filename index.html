@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-  setInterval(giuHopCam, 500);
+  giuHopCam();
   document.querySelectorAll("button, a").forEach(function(nut) {
     var txt = (nut.innerText || "").toLowerCase();
     if (txt.includes("google")) {
@@ -93,24 +93,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }, true);
     }
   });
-});
-</script>
-  <script>
-// BƯỚC 2d - SỬA LỖI TRẮNG TRANG DO 2c GIẤU NHẦM
-document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(function() {
-    // 1. Hiện lại tất cả những gì 2c đã giấu nhầm
-    document.querySelectorAll("div, p, span, main, section, body, html").forEach(function(el) {
-      if (el.style.display === "none") el.style.display = "";
-    });
-    // 2. Chỉ giấu đúng cái hộp cam nhỏ, không giấu khung to
-    document.querySelectorAll("div, p").forEach(function(el) {
-      var t = (el.innerText || "").trim();
-      if (t.startsWith("Đăng nhập Google chưa được bật") && el.children.length <= 2) {
-        el.style.display = "none";
-      }
-    });
-  }, 200);
 });
 </script>
   <style>
