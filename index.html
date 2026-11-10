@@ -36,6 +36,41 @@ window.quenMatKhauThat = async function(email) {
   alert("Đã gửi link đổi mật khẩu về " + email + ". Anh mở Gmail để đổi.");
 };
 </script>
+  <script>
+// BƯỚC 2b - NỐI NÚT CŨ VÀO HÀM THẬT
+document.addEventListener("DOMContentLoaded", function() {
+  function layEmailMatKhau(nut) {
+    var form = nut.closest("form") || nut.closest("div") || document;
+    var emailEl = form.querySelector('input[type="email"]') || document.querySelector('input[type="email"]') || document.querySelector('input[placeholder*="mail" i]') || document.querySelector('input[placeholder*="Email" i]');
+    var passEl = form.querySelector('input[type="password"]') || document.querySelector('input[type="password"]');
+    return { email: emailEl ? emailEl.value.trim() : "", pass: passEl ? passEl.value : "" };
+  }
+  document.querySelectorAll("button, a").forEach(function(nut) {
+    var txt = (nut.innerText || nut.textContent || "").toLowerCase();
+    if (txt.includes("google")) {
+      nut.addEventListener("click", function(e) { e.preventDefault(); window.dangNhapGoogleThat(); });
+    } else if (txt.includes("đăng ký") || txt.includes("dang ky")) {
+      nut.addEventListener("click", function(e) {
+        var d = layEmailMatKhau(nut);
+        if (!d.email || !d.pass) return;
+        e.preventDefault(); window.dangKyThat(d.email, d.pass);
+      });
+    } else if (txt.includes("đăng nhập") || txt.includes("dang nhap")) {
+      nut.addEventListener("click", function(e) {
+        var d = layEmailMatKhau(nut);
+        if (!d.email || !d.pass) return;
+        e.preventDefault(); window.dangNhapThat(d.email, d.pass);
+      });
+    } else if (txt.includes("quên mật khẩu") || txt.includes("quen mat khau")) {
+      nut.addEventListener("click", function(e) {
+        var d = layEmailMatKhau(nut);
+        if (!d.email) return;
+        e.preventDefault(); window.quenMatKhauThat(d.email);
+      });
+    }
+  });
+});
+</script>
   <style>
 @font-face {
   font-family: "Optimistic";
