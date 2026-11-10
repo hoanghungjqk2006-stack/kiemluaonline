@@ -6,6 +6,36 @@ window.SUPABASE_KEY = "sb_publishable_cvp1HhiaLTvcdvw2kV34YQ_0sN-qwLS";
 window.SITE_URL = "https://hoanghungjqk2006-stack.github.io/kiemluaonline/";
 window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 </script>
+  <script>
+// BƯỚC 2 - ĐĂNG KÝ / ĐĂNG NHẬP THẬT BẰNG SUPABASE
+window.dangKyThat = async function(email, matKhau) {
+  const { data, error } = await window.supabaseClient.auth.signUp({
+    email: email,
+    password: matKhau,
+    options: { emailRedirectTo: window.SITE_URL }
+  });
+  if (error) { alert(error.message); return null; }
+  alert("Đã gửi mail xác nhận về " + email + ". Anh mở Gmail bấm link xác nhận rồi mới đăng nhập được.");
+  return data;
+};
+window.dangNhapThat = async function(email, matKhau) {
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email: email, password: matKhau });
+  if (error) { alert(error.message); return null; }
+  alert("Đăng nhập thành công: " + email);
+  return data;
+};
+window.dangNhapGoogleThat = async function() {
+  await window.supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: window.SITE_URL }
+  });
+};
+window.quenMatKhauThat = async function(email) {
+  const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: window.SITE_URL });
+  if (error) { alert(error.message); return; }
+  alert("Đã gửi link đổi mật khẩu về " + email + ". Anh mở Gmail để đổi.");
+};
+</script>
   <style>
 @font-face {
   font-family: "Optimistic";
