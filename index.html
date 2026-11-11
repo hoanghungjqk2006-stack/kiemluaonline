@@ -67,5 +67,8 @@ function addTask(){let title=$('#newTitle').value.trim(),type=$('#newType').valu
 function removeTask(id){tasks=tasks.filter(t=>t.id!==id);toast('Đã xóa nhiệm vụ demo.');render()}
 render();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./auth.js"></script>
 </body>
 </html>
