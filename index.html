@@ -1,1026 +1,218 @@
-{
-  "name": "kiem-lua-online",
-  "private": true,
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.45.4",
-    "lucide-react": "^0.441.0",
-    "next": "14.2.13",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.30",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2"
-  }
-}
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-import type { Config } from "tailwindcss";
-const config: Config = {
-  content: ["./src/**/*.{ts,tsx}"],
-  theme: {
-    extend: {
-      colors: {
-        navy: { 950: "#071224", 900: "#0B1B33", 800: "#122745" },
-        lua: { 500: "#22C55E", 600: "#16A34A", 100: "#DCFCE7" },
-      },
-    },
-  },
-  plugins: [],
-};
-export default config;
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-body { background: #0B1B33; color: #fff; }
-export const cn = (...c: (string | undefined | boolean)[]) =>
-  c.filter(Boolean).join(" ");
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiếm Lúa Online</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{background:#0B1B33;color:#fff;min-height:100vh;padding-bottom:90px}
+.top{position:sticky;top:0;background:#0B1B33;z-index:10;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;gap:8px;align-items:center;font-weight:800}
+.logo span{width:32px;height:32px;background:#22C55E;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.wrap{max-width:430px;margin:0 auto;padding:14px}
+.card{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;margin-bottom:12px}
+.wallet{background:linear-gradient(135deg,#22C55E,#059669);color:#071224;border-radius:16px;padding:18px;margin-bottom:12px}
+.wallet h1{font-size:32px;margin:6px 0}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;background:#22C55E;color:#071224;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
+.btn2{width:100%;padding:13px;border:none;border-radius:12px;background:#071224;color:#fff;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff}
+input,select{width:100%;padding:12px;border-radius:12px;border:none;background:rgba(255,255,255,.12);color:#fff;outline:none;margin-top:8px;font-size:15px}
+input::placeholder{color:rgba(255,255,255,.5)}
+select option{color:#000}
+.row{display:flex;gap:8px}
+.row>div{flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:10px;text-align:center}
+.row b{font-size:15px}
+.small{font-size:12px;opacity:.7}
+.green{color:#22C55E;font-weight:800}
+.red{color:#ff6b6b}
+.yellow{color:#facc15}
+.task{cursor:pointer}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(34,197,94,.2);color:#22C55E;font-size:12px;margin-right:6px}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.12)}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#0B1B33;border-top:1px solid rgba(255,255,255,.1);z-index:20}
+.bottom .in{max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom button{background:none;border:none;color:rgba(255,255,255,.6);padding:10px 0;font-size:11px;cursor:pointer}
+.bottom button.on{color:#22C55E;font-weight:800}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.modal .box{background:#122745;width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:18px;padding-bottom:30px;max-height:90vh;overflow:auto}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#22C55E;color:#071224;padding:10px 16px;border-radius:999px;font-weight:800;z-index:100;font-size:14px}
+.bar{display:flex;align-items:end;gap:6px;height:80px;margin-top:10px}
+.bar div{flex:1;background:#22C55E;border-radius:6px 6px 0 0;text-align:center;font-size:11px;padding-top:4px}
+.bar div.off{background:rgba(255,255,255,.15)}
+</style>
+</head>
+<body>
 
-export const fmtLua = (n: number) =>
-  new Intl.NumberFormat("vi-VN").format(n) + " Lúa";
+<div class="top"><div class="logo"><span>🌾</span><div>KIẾM LÚA ONLINE<br><small style="font-weight:400;opacity:.6">1 Lúa = 1 VNĐ</small></div></div><div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,.2);display:flex;align-items:center;justify-content:center;font-weight:800">T</div></div>
 
-export const fmtVND = (n: number) =>
-  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
-  import { createBrowserClient } from "@supabase/ssr";
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+<div class="wrap">
 
-export function createServerSupabase() {
-  const s = cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return s.getAll(); },
-        setAll(v) {
-          try {
-            v.forEach(({ name, value, options }) => s.set(name, value, options));
-          } catch {}
-        },
-      },
-    }
-  );
-}
-import "./globals.css";
-export const metadata = { title: "Kiếm Lúa Online" };
-export default function Root({ children }: { children: React.ReactNode }) {
-  return <html lang="vi"><body>{children}</body></html>;
-}
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, ListTodo, Wallet, Banknote, User, Menu, X } from "lucide-react";
-import { useState } from "react";
+<!-- TRANG CHỦ -->
+<div id="page-home">
+<div class="wallet"><div class="small">Số dư khả dụng</div><h1 id="balanceHome">128.500 Lúa</h1><div class="small">Đang chờ: 12.000 Lúa • Đã kiếm: 342.000 Lúa</div><div class="row" style="margin-top:12px"><button class="btn2" onclick="go('rut-tien')">Rút tiền</button><button class="btn" style="background:#fff" onclick="go('vi')">Xem ví</button></div></div>
+<div class="row"><div><div class="small">Đã kiếm</div><b>342.000</b></div><div><div class="small">Hoàn thành</div><b>18</b></div><div><div class="small">Đã rút</div><b>210.000</b></div></div>
+<div class="card"><b>Thu nhập 7 ngày</b><div class="bar"><div style="height:30%">2k</div><div style="height:45%">3k</div><div style="height:35%">2k</div><div style="height:60%">5k</div><div style="height:50%">4k</div><div style="height:75%">7k</div><div style="height:95%;background:#22C55E">8.5k</div></div><div class="small" style="text-align:center;margin-top:4px">T2 T3 T4 T5 T6 T7 CN</div></div>
+<div class="card"><b>Nhiệm vụ nổi bật</b><div style="margin-top:10px" onclick="openTask(0)" class="task"><b>Xem video giới thiệu 30s</b><span class="green" style="float:right">+5.000 Lúa</span><div class="small">Xem hết video, lấy mã xác nhận</div></div><hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:10px 0"><div onclick="openTask(1)" class="task"><b>Tải app ngân hàng</b><span class="green" style="float:right">+15.000 Lúa</span><div class="small">Tải app, đăng ký, lấy mã</div></div></div>
+<div class="card"><b>Hoạt động gần đây</b><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Xem video</span><b class="green">+5.000</b></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Tải app</span><b class="green">+3.500</b></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Rút tiền đã duyệt</span><b class="red">-50.000</b></div></div>
+</div>
 
-export function BottomNav() {
-  const p = usePathname();
-  const items = [
-    { href: "/", label: "Trang chủ", icon: Home },
-    { href: "/nhiem-vu", label: "Nhiệm vụ", icon: ListTodo },
-    { href: "/vi", label: "Ví", icon: Wallet },
-    { href: "/rut-tien", label: "Rút tiền", icon: Banknote },
-    { href: "/ca-nhan", label: "Tài khoản", icon: User },
-  ];
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0B1B33]/95 border-t border-white/10">
-      <div className="max-w-md mx-auto grid grid-cols-5">
-        {items.map((it) => {
-          const A = it.icon;
-          const act = p === it.href;
-          return (
-            <Link key={it.href} href={it.href}
-              className={"py-2.5 flex flex-col items-center gap-0.5 text-[11px] " + (act ? "text-[#22C55E]" : "text-white/60")}>
-              <A size={20} />{it.label}
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
+<!-- NHIỆM VỤ -->
+<div id="page-nhiem-vu" class="hidden">
+<input id="searchTask" placeholder="Tìm nhiệm vụ..." oninput="renderTasks()">
+<div style="margin:10px 0"><button class="chip" onclick="filter='all';renderTasks()">Tất cả</button><button class="chip" onclick="filter='link';renderTasks()">Link</button><button class="chip" onclick="filter='app';renderTasks()">App</button></div>
+<div id="taskList"></div>
+</div>
 
-export function Header({ title }: { title: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <header className="sticky top-0 z-40 bg-[#0B1B33]/95 border-b border-white/10">
-        <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
-          <button onClick={() => setOpen(true)} className="p-2 -ml-2"><Menu /></button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#22C55E] flex items-center justify-center text-xl">🌾</div>
-            <div className="leading-tight">
-              <p className="font-bold text-sm">KIẾM LÚA ONLINE</p>
-              <p className="text-[11px] text-white/60">{title}</p>
-            </div>
-          </div>
-          <Link href="/ca-nhan" className="w-9 h-9 rounded-full bg-[#22C55E]/20 flex items-center justify-center font-bold">T</Link>
-        </div>
-      </header>
-      {open && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-72 bg-[#0B1B33] p-4">
-            <div className="flex justify-between items-center mb-6"><b>Menu</b><button onClick={() => setOpen(false)}><X /></button></div>
-            {[["/", "Trang chủ"], ["/nhiem-vu", "Nhiệm vụ"], ["/vi", "Ví"], ["/rut-tien", "Rút tiền"], ["/lich-su", "Lịch sử"], ["/admin", "Admin"]].map(([h, l]) => (
-              <Link key={h} href={h} onClick={() => setOpen(false)} className="block py-3 px-3 rounded-xl hover:bg-white/10">{l}</Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
+<!-- VÍ -->
+<div id="page-vi" class="hidden">
+<div class="wallet"><div class="small">Số dư khả dụng</div><h1 id="balanceVi">128.500 Lúa</h1><div class="small">Đang chờ: 12.000 • Đã khóa: 0 • Đã rút: 210.000</div></div>
+<div class="card"><b>Lịch sử giao dịch</b><div id="txList" style="margin-top:8px"></div></div>
+</div>
 
-export function Page({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-[#0B1B33] pb-24">
-      <Header title={title} />
-      <main className="max-w-md mx-auto px-4 pt-4 space-y-4">{children}</main>
-      <BottomNav />
-    </div>
-  );
-}
-        "use server";
-import { createServerSupabase } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+<!-- RÚT TIỀN -->
+<div id="page-rut-tien" class="hidden">
+<div class="card"><div class="small">Số dư khả dụng</div><h2 id="balanceRut" style="color:#22C55E">128.500 Lúa</h2></div>
+<div class="card">
+<b>Rút tiền</b>
+<input id="wdAmount" type="number" placeholder="VD: 50000" oninput="updateWd()">
+<div class="row" style="margin-top:8px"><button class="btn btn-ghost" onclick="setWd(50000)">50k</button><button class="btn btn-ghost" onclick="setWd(100000)">100k</button><button class="btn btn-ghost" onclick="setWd(200000)">200k</button></div>
+<select id="wdMethod"><option>Chuyển khoản ngân hàng - Vietcombank</option><option>MoMo</option><option>Chuyển khoản - BIDV</option></select>
+<input id="wdName" placeholder="Tên chủ tài khoản">
+<input id="wdAcc" placeholder="Số tài khoản">
+<p class="small" style="color:#facc15;margin-top:8px">⚠️ Không bao giờ nhập mật khẩu / OTP ngân hàng.</p>
+<p style="margin-top:8px">Phí: 0 • Thực nhận: <b class="green" id="wdNet">0 Lúa</b></p>
+<button class="btn" onclick="submitWd()">Gửi yêu cầu rút</button>
+</div>
+<div class="card"><b>Yêu cầu của bạn</b><div id="wdList" style="margin-top:8px"></div></div>
+</div>
 
-const codeSchema = z.object({
-  sessionId: z.string().uuid(),
-  code: z.string().trim().min(4).max(32),
-  sessionToken: z.string(),
-});
+<!-- TÀI KHOẢN -->
+<div id="page-ca-nhan" class="hidden">
+<div class="card" style="display:flex;gap:12px;align-items:center"><div style="width:54px;height:54px;border-radius:50%;background:#22C55E;color:#071224;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800">T</div><div><b>Tub Hmoob</b><div class="small">tub.hmoob.477386</div></div></div>
+<div class="card"><b>Chống gian lận</b><p class="small" style="margin-top:8px">IP hiện tại: 113.176.xxx.xxx</p><p class="small">Device ID: b74a9a60…9f2a</p><p class="small">Trạng thái: <span class="green">Normal</span></p><p class="small" style="margin-top:8px">Không dùng VPN / không tạo nhiều tài khoản để gian lận.</p></div>
+<div class="card"><b>Admin</b><p class="small" style="margin-top:6px">Admin duyệt rút tiền và duyệt nhiệm vụ thủ công trong Supabase. Không cấp quyền từ frontend.</p><button class="btn btn-ghost" onclick="showToast('Bạn không có quyền Admin')">Mở trang Admin</button></div>
+</div>
 
-export async function startTask(taskId: string) {
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return { error: "Chưa đăng nhập" };
-  const { data, error } = await supa.rpc("create_task_session", {
-    p_task_id: taskId, p_device_hash: null, p_ip_hash: null, p_ip_masked: null,
-  });
-  if (error) return { error: error.message };
-  return { data };
-}
+</div>
 
-export async function submitCode(input: { sessionId: string; code: string; sessionToken: string }) {
-  const p = codeSchema.safeParse(input);
-  if (!p.success) return { error: "Mã không hợp lệ" };
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("submit_task_verification_code", {
-    p_session_id: p.data.sessionId,
-    p_code: p.data.code,
-    p_session_token: p.data.sessionToken,
-  });
-  if (error) return { error: error.message };
-  return { data };
-}
+<!-- BOTTOM NAV -->
+<div class="bottom"><div class="in">
+<button id="nav-home" class="on" onclick="go('home')">🏠<br>Trang chủ</button>
+<button id="nav-nhiem-vu" onclick="go('nhiem-vu')">📋<br>Nhiệm vụ</button>
+<button id="nav-vi" onclick="go('vi')">👛<br>Ví</button>
+<button id="nav-rut-tien" onclick="go('rut-tien')">💵<br>Rút tiền</button>
+<button id="nav-ca-nhan" onclick="go('ca-nhan')">👤<br>Tài khoản</button>
+</div></div>
 
-export async function requestCaptcha(sessionId: string, sessionToken: string) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("create_math_captcha", {
-    p_session_id: sessionId, p_session_token: sessionToken,
-  });
-  if (error) return { error: error.message };
-  return { data };
-}
+<!-- MODAL NHIỆM VỤ -->
+<div id="taskModal" class="modal hidden"><div class="box">
+<div style="display:flex;justify-content:space-between"><h3 id="taskTitle"></h3><button onclick="closeModal()" style="background:none;border:none;color:#fff;font-size:22px">×</button></div>
+<p class="green" id="taskReward" style="margin:8px 0"></p>
+<p class="small" id="taskDesc"></p>
+<p style="margin-top:10px"><b>Hướng dẫn:</b><br>1. Bấm Bắt đầu<br>2. Thực hiện nhiệm vụ, lấy mã<br>3. Nhập mã + trả lời CAPTCHA để nhận Lúa</p>
+<div id="verifyBox" style="margin-top:12px"></div>
+</div></div>
 
-export async function verifyCaptcha(input: { sessionId: string; sessionToken: string; captchaToken: string; answer: number }) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("verify_math_captcha", {
-    p_session_id: input.sessionId,
-    p_session_token: input.sessionToken,
-    p_captcha_token: input.captchaToken,
-    p_answer: input.answer,
-  });
-  if (error) return { error: error.message };
-  return { data };
-}
+<div id="toast" class="toast hidden"></div>
 
-export async function claimReward(sessionId: string, sessionToken: string) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("complete_task_and_reward", {
-    p_session_id: sessionId,
-    p_session_token: sessionToken,
-    p_idempotency_key: "claim:" + sessionId,
-  });
-  if (error) return { error: error.message };
-  revalidatePath("/"); revalidatePath("/vi");
-  return { data };
+<script>
+let balance=128500;
+let filter='all';
+let currentTask=null;
+let captchaAns=0, captchaQ='';
+let txs=[
+ {t:'Xem video',a:5000},{t:'Tải app',a:3500},{t:'Rút tiền đã duyệt',a:-50000},{t:'Khảo sát 2 phút',a:4500},{t:'Theo dõi Fanpage',a:3000}
+];
+let wds=[
+ {a:50000,s:'Đã thanh toán',c:'green'},{a:100000,s:'Chờ duyệt',c:'yellow'},{a:30000,s:'Bị từ chối',c:'red'}
+];
+const tasks=[
+ {title:'Xem video giới thiệu 30s',reward:5000,type:'link',desc:'Xem hết video 30s, lấy mã xác nhận.'},
+ {title:'Tải app ngân hàng',reward:15000,type:'app',desc:'Tải app, đăng ký tài khoản, lấy mã.'},
+ {title:'Đăng ký tài khoản',reward:8000,type:'link',desc:'Đăng ký tài khoản mới, lấy mã.'},
+ {title:'Khảo sát 2 phút',reward:4500,type:'link',desc:'Trả lời khảo sát 2 phút.'},
+ {title:'Theo dõi Fanpage',reward:3000,type:'link',desc:'Theo dõi Fanpage, chụp mã.'}
+];
+function fmt(n){return n.toLocaleString('vi-VN')+' Lúa'}
+function showToast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)}
+function go(p){
+ ['home','nhiem-vu','vi','rut-tien','ca-nhan'].forEach(x=>{
+  document.getElementById('page-'+x).classList.toggle('hidden',x!==p);
+  document.getElementById('nav-'+x).classList.toggle('on',x===p);
+ });
+ if(p==='vi')renderTx(); if(p==='nhiem-vu')renderTasks(); if(p==='rut-tien')renderWd();
+ window.scrollTo(0,0);
 }
-
-export async function submitManual(sessionId: string, sessionToken: string, evidence: string) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("submit_manual_completion", {
-    p_session_id: sessionId, p_session_token: sessionToken, p_evidence: evidence,
-  });
-  if (error) return { error: error.message };
-  return { data };
+function renderTasks(){
+ let q=(document.getElementById('searchTask').value||'').toLowerCase();
+ let list=tasks.filter(t=>(filter==='all'||t.type===filter)&&t.title.toLowerCase().includes(q));
+ document.getElementById('taskList').innerHTML=list.map((t,i)=>`
+ <div class="card task" onclick="openTask(${tasks.indexOf(t)})"><div style="display:flex;justify-content:space-between"><b>${t.title}</b><span class="green">+${fmt(t.reward)}</span></div><p class="small" style="margin-top:4px">${t.desc}</p><span class="chip">${t.type==='link'?'Link':'App'}</span><span class="badge">Mã + CAPTCHA</span></div>`).join('')||'<div class="card">Không có nhiệm vụ.</div>';
 }
-
-export async function createWithdrawal(input: { methodId: string; amount: number; accountName: string; accountNumber: string; bankName: string }) {
-  const supa = createServerSupabase();
-  const masked = "****" + input.accountNumber.slice(-4);
-  const { data, error } = await supa.rpc("create_withdrawal", {
-    p_method_id: input.methodId,
-    p_amount: input.amount,
-    p_account_name: input.accountName,
-    p_account_number_masked: masked,
-    p_bank_name: input.bankName,
-    p_idempotency_key: crypto.randomUUID(),
-  });
-  if (error) return { error: error.message };
-  revalidatePath("/rut-tien");
-  return { data };
+function renderTx(){
+ document.getElementById('txList').innerHTML=txs.map(x=>`<div style="display:flex;justify-content:space-between;margin-top:8px"><span>${x.t}</span><b class="${x.a>=0?'green':'red'}">${x.a>=0?'+':''}${fmt(x.a)}</b></div>`).join('');
+ document.getElementById('balanceVi').textContent=fmt(balance);
+ document.getElementById('balanceHome').textContent=fmt(balance);
+ document.getElementById('balanceRut').textContent=fmt(balance);
 }
-
-export async function cancelWithdrawal(id: string) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("cancel_withdrawal", { p_withdrawal_id: id });
-  if (error) return { error: error.message };
-  revalidatePath("/rut-tien");
-  return { data };
+function renderWd(){
+ document.getElementById('wdList').innerHTML=wds.map(w=>`<div style="display:flex;justify-content:space-between;margin-top:8px"><span>${fmt(w.a)}</span><b class="${w.c}">${w.s}</b></div>`).join('');
 }
-
-// ADMIN
-export async function adminReviewWithdrawal(id: string, action: "approve" | "reject" | "processing", reason = "") {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("admin_review_withdrawal", {
-    p_withdrawal_id: id, p_action: action, p_reason: reason, p_admin_note: "",
-  });
-  if (error) return { error: error.message };
-  revalidatePath("/admin/rut-tien");
-  return { data };
+function setWd(v){document.getElementById('wdAmount').value=v;updateWd()}
+function updateWd(){let v=Number(document.getElementById('wdAmount').value||0);document.getElementById('wdNet').textContent=fmt(v)}
+function submitWd(){
+ let v=Number(document.getElementById('wdAmount').value||0);
+ if(!v||v<10000) return showToast('Tối thiểu 10.000 Lúa');
+ if(v>balance) return showToast('Số dư không đủ');
+ if(!document.getElementById('wdName').value||!document.getElementById('wdAcc').value) return showToast('Nhập tên + số tài khoản');
+ balance-=v; wds.unshift({a:v,s:'Chờ duyệt',c:'yellow'}); renderTx(); renderWd(); showToast('Đã gửi yêu cầu, chờ Admin duyệt'); go('rut-tien');
 }
-
-export async function adminMarkPaid(id: string, ref: string) {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("admin_mark_withdrawal_paid", {
-    p_withdrawal_id: id, p_payment_reference: ref,
-  });
-  if (error) return { error: error.message };
-  revalidatePath("/admin/rut-tien");
-  return { data };
+function openTask(i){
+ currentTask=tasks[i];
+ document.getElementById('taskTitle').textContent=currentTask.title;
+ document.getElementById('taskReward').textContent='+'+fmt(currentTask.reward);
+ document.getElementById('taskDesc').textContent=currentTask.desc;
+ document.getElementById('taskModal').classList.remove('hidden');
+ showStep1();
 }
-
-export async function adminReviewManual(id: string, approve: boolean, reason = "") {
-  const supa = createServerSupabase();
-  const { data, error } = await supa.rpc("admin_review_manual_completion", {
-    p_completion_id: id, p_approve: approve, p_reason: reason,
-  });
-  if (error) return { error: error.message };
-  return { data };
+function closeModal(){document.getElementById('taskModal').classList.add('hidden')}
+function newCaptcha(){
+ let a=Math.floor(Math.random()*9)+1, b=Math.floor(Math.random()*9)+1, op=['+','-','×'][Math.floor(Math.random()*3)];
+ if(op==='+'){captchaQ=a+' + '+b+' = ?';captchaAns=a+b}
+ if(op==='-'){captchaQ=Math.max(a,b)+' - '+Math.min(a,b)+' = ?';captchaAns=Math.max(a,b)-Math.min(a,b)}
+ if(op==='×'){captchaQ=a+' × '+b+' = ?';captchaAns=a*b}
+ let el=document.getElementById('captchaQ'); if(el) el.textContent=captchaQ;
 }
-        "use client";
-import { useState } from "react";
-import { startTask, submitCode, requestCaptcha, verifyCaptcha, claimReward, submitManual } from "@/app/actions";
-
-export default function TaskVerify({ taskId, verificationType, reward }: { taskId: string; verificationType: string; reward: number }) {
-  const [step, setStep] = useState(0);
-  const [session, setSession] = useState<any>(null);
-  const [code, setCode] = useState("");
-  const [captcha, setCaptcha] = useState<any>(null);
-  const [answer, setAnswer] = useState("");
-  const [msg, setMsg] = useState("");
-  const [done, setDone] = useState(false);
-
-  async function start() {
-    setMsg("");
-    const r: any = await startTask(taskId);
-    if (r.error) return setMsg(r.error);
-    setSession(r.data); setStep(1);
-  }
-  async function doCode() {
-    const r: any = await submitCode({ sessionId: session.session_id, code, sessionToken: session.session_token });
-    if (r.error) return setMsg(r.error);
-    const c: any = await requestCaptcha(session.session_id, session.session_token);
-    if (c.error) return setMsg(c.error);
-    setCaptcha(c.data); setStep(2);
-  }
-  async function doCaptcha() {
-    const r: any = await verifyCaptcha({ sessionId: session.session_id, sessionToken: session.session_token, captchaToken: captcha.captcha_token, answer: Number(answer) });
-    if (r.error) return setMsg(r.error);
-    const cl: any = await claimReward(session.session_id, session.session_token);
-    if (cl.error) return setMsg(cl.error);
-    setDone(true); setStep(3);
-  }
-  async function doManual() {
-    const r: any = await submitManual(session.session_id, session.session_token, code);
-    if (r.error) return setMsg(r.error);
-    setStep(3); setDone(false);
-  }
-
-  if (step === 0) return (
-    <div>
-      <button onClick={start} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Bắt đầu làm nhiệm vụ</button>
-      {msg && <p className="text-red-400 text-sm mt-2">{msg}</p>}
-    </div>
-  );
-  if (step === 3) return (
-    <div className="text-center py-4">
-      {done ? <><p className="text-4xl">🎉</p><p className="font-bold text-lg mt-2">Chúc mừng!</p><p>Bạn đã nhận <b className="text-[#22C55E]">+{reward} Lúa</b></p></>
-        : <><p className="font-bold">Đã gửi để Admin duyệt</p><p className="text-sm text-white/70">Nhiệm vụ thủ công sẽ cộng Lúa sau khi Admin duyệt.</p></>}
-      <a href="/vi" className="block mt-4 py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold text-center">Xem ví</a>
-    </div>
-  );
-  return (
-    <div className="space-y-3">
-      <p className="text-xs">{step === 1 ? "1. Nhập mã" : "2. CAPTCHA"} → 3. Nhận Lúa</p>
-      {step === 1 && <>
-        <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã, ví dụ ABC123" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <button onClick={verificationType === "manual" ? doManual : doCode} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">
-          {verificationType === "manual" ? "Gửi để Admin duyệt" : "Kiểm tra mã"}
-        </button>
-      </>}
-      {step === 2 && captcha && <>
-        <div className="p-4 rounded-xl bg-white/10 text-center"><p className="text-2xl font-bold">{captcha.question}</p></div>
-        <input value={answer} onChange={(e) => setAnswer(e.target.value)} inputMode="numeric" placeholder="Nhập đáp án" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <button onClick={doCaptcha} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Xác minh & Nhận Lúa</button>
-      </>}
-      {msg && <p className="text-red-400 text-sm">{msg}</p>}
-    </div>
-  );
+function showStep1(){
+ document.getElementById('verifyBox').innerHTML=`
+ <p><b>Bước 1: Nhập mã xác nhận</b></p>
+ <input id="codeIn" placeholder="Nhập mã, ví dụ ABC123">
+ <button class="btn" onclick="checkCode()">Kiểm tra mã</button>
+ <p class="small" style="margin-top:6px">Demo: nhập 6 ký tự bất kỳ để qua bước CAPTCHA.</p>`;
 }
-        import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import Link from "next/link";
-import { fmtLua } from "@/lib/utils";
-
-export default async function Home() {
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return (
-    <Page title="Trang chủ">
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-[#22C55E] to-emerald-700 text-[#0B1B33]">
-        <h1 className="text-2xl font-bold">Kiếm Lúa Online 🌾</h1>
-        <p className="mt-2 text-sm">Làm nhiệm vụ, nhận Lúa. 1 Lúa = 1 VNĐ. Rút tiền Admin duyệt thủ công.</p>
-        <div className="flex gap-2 mt-4">
-          <Link href="/dang-nhap" className="flex-1 py-3 text-center rounded-xl bg-[#0B1B33] text-white font-bold">Đăng nhập</Link>
-          <Link href="/dang-ky" className="flex-1 py-3 text-center rounded-xl bg-white font-bold">Đăng ký</Link>
-        </div>
-      </div>
-    </Page>
-  );
-  const { data: wallet } = await supa.from("wallets").select("*").eq("user_id", user.id).single();
-  const { data: tasks } = await supa.from("tasks").select("*").eq("status", "active").order("created_at", { ascending: false }).limit(4);
-  const { data: tx } = await supa.from("wallet_transactions").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(4);
-  return (
-    <Page title="Trang chủ">
-      <div className="p-5 rounded-2xl bg-gradient-to-br from-[#22C55E] to-emerald-700 text-[#0B1B33]">
-        <p className="text-sm opacity-80">Số dư khả dụng</p>
-        <p className="text-3xl font-extrabold">{fmtLua(wallet?.available_balance || 0)}</p>
-        <p className="text-sm mt-1">Đang chờ: {fmtLua(wallet?.pending_balance || 0)} • Đã kiếm: {fmtLua(wallet?.total_earned || 0)}</p>
-        <div className="flex gap-2 mt-4">
-          <Link href="/rut-tien" className="flex-1 py-2.5 text-center rounded-xl bg-[#0B1B33] text-white font-bold">Rút tiền</Link>
-          <Link href="/vi" className="flex-1 py-2.5 text-center rounded-xl bg-white font-bold">Xem ví</Link>
-        </div>
-      </div>
-      <div>
-        <div className="flex justify-between items-center mb-2"><b>Nhiệm vụ mới nhất</b><Link href="/nhiem-vu" className="text-[#22C55E] text-sm">Xem tất cả →</Link></div>
-        <div className="space-y-2">
-          {(tasks || []).length === 0 ? <p className="text-white/60 text-sm p-4 rounded-xl bg-white/5 text-center">Chưa có nhiệm vụ đang chạy.</p>
-            : tasks!.map((t: any) => (
-              <Link key={t.id} href={"/nhiem-vu/" + t.id} className="block p-4 rounded-2xl bg-white/5">
-                <div className="flex justify-between"><b>{t.title}</b><span className="text-[#22C55E] font-bold">+{fmtLua(t.reward_amount)}</span></div>
-                <p className="text-sm text-white/60">{t.description}</p>
-              </Link>
-            ))}
-        </div>
-      </div>
-      <div><b>Hoạt động gần đây</b>
-        <div className="mt-2 space-y-2">
-          {(tx || []).map((x: any) => (
-            <div key={x.id} className="flex justify-between p-3 rounded-xl bg-white/5">
-              <span className="text-sm">{x.description}</span>
-              <b className={x.amount >= 0 ? "text-[#22C55E]" : "text-red-400"}>{x.amount >= 0 ? "+" : ""}{fmtLua(x.amount)}</b>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Page>
-  );
+function checkCode(){
+ let v=document.getElementById('codeIn').value.trim();
+ if(v.length<6) return showToast('Nhập mã 6 ký tự');
+ document.getElementById('verifyBox').innerHTML=`
+ <p><b>Bước 2: CAPTCHA phép tính</b></p>
+ <div style="background:rgba(255,255,255,.1);padding:14px;border-radius:12px;text-align:center;font-size:24px;font-weight:800;margin-top:8px"><span id="captchaQ"></span></div>
+ <input id="capAns" type="number" placeholder="Nhập đáp án">
+ <button class="btn" onclick="checkCaptcha()">Xác minh & Nhận Lúa</button>
+ <button class="btn btn-ghost" onclick="newCaptcha()">Đổi phép tính</button>`;
+ newCaptcha();
 }
-        import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import Link from "next/link";
-import { fmtLua } from "@/lib/utils";
-
-export default async function Tasks({ searchParams }: { searchParams: { q?: string; type?: string } }) {
-  const supa = createServerSupabase();
-  let q = supa.from("tasks").select("*").eq("status", "active").order("created_at", { ascending: false });
-  if (searchParams.type) q = q.eq("type", searchParams.type as any);
-  if (searchParams.q) q = q.ilike("title", "%" + searchParams.q + "%");
-  const { data: tasks } = await q.limit(50);
-  return (
-    <Page title="Nhiệm vụ">
-      <form className="flex gap-2">
-        <input name="q" defaultValue={searchParams.q || ""} placeholder="Tìm nhiệm vụ..." className="flex-1 p-3 rounded-xl bg-white/10 outline-none" />
-        <button className="px-4 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Tìm</button>
-      </form>
-      <div className="flex gap-2">
-        <Link href="/nhiem-vu" className="px-3 py-1.5 rounded-full bg-white/10 text-sm">Tất cả</Link>
-        <Link href="/nhiem-vu?type=link" className="px-3 py-1.5 rounded-full bg-white/10 text-sm">Link</Link>
-        <Link href="/nhiem-vu?type=app" className="px-3 py-1.5 rounded-full bg-white/10 text-sm">App</Link>
-      </div>
-      {(tasks || []).map((t: any) => (
-        <Link key={t.id} href={"/nhiem-vu/" + t.id} className="block p-4 rounded-2xl bg-white/5">
-          <div className="flex justify-between gap-2"><b>{t.title}</b><span className="text-[#22C55E] font-bold">+{fmtLua(t.reward_amount)}</span></div>
-          <p className="text-sm text-white/60 mt-1">{t.description}</p>
-          <span className="text-xs px-2 py-1 rounded-full bg-[#22C55E]/20 text-[#22C55E]">{t.type === "link" ? "Link" : "App"}</span>
-        </Link>
-      ))}
-    </Page>
-  );
+function checkCaptcha(){
+ let v=Number(document.getElementById('capAns').value);
+ if(v!==captchaAns) return showToast('Sai rồi, thử lại!');
+ balance+=currentTask.reward;
+ txs.unshift({t:currentTask.title,a:currentTask.reward});
+ renderTx();
+ document.getElementById('verifyBox').innerHTML=`<div style="text-align:center;padding:10px"><div style="font-size:44px">🎉</div><h3>Chúc mừng!</h3><p>Bạn đã nhận <b class="green">+${fmt(currentTask.reward)}</b></p><button class="btn" onclick="closeModal();go('vi')">Xem ví</button></div>`;
+ showToast('Đã cộng '+fmt(currentTask.reward));
 }
-        import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import TaskVerify from "@/components/TaskVerify";
-import { fmtLua } from "@/lib/utils";
-import { notFound } from "next/navigation";
-
-export default async function Detail({ params }: { params: { id: string } }) {
-  const supa = createServerSupabase();
-  const { data: t } = await supa.from("tasks").select("*").eq("id", params.id).single();
-  if (!t) notFound();
-  return (
-    <Page title="Chi tiết nhiệm vụ">
-      <div className="p-5 rounded-2xl bg-white/5">
-        <h1 className="text-xl font-bold">{t.title}</h1>
-        <p className="text-[#22C55E] font-bold text-lg mt-1">+{fmtLua(t.reward_amount)}</p>
-        <p className="text-sm text-white/70 mt-2">{t.description}</p>
-        <p className="text-sm text-white/70 mt-3 whitespace-pre-line">{t.instructions}</p>
-        {t.task_url && <a href={t.task_url} target="_blank" className="block mt-4 py-3 text-center rounded-xl bg-white/10 font-bold">Mở link nhiệm vụ ↗</a>}
-      </div>
-      <div className="p-5 rounded-2xl bg-white/5">
-        <b>Xác minh & nhận thưởng</b>
-        <div className="mt-3"><TaskVerify taskId={t.id} verificationType={t.verification_type} reward={t.reward_amount} /></div>
-      </div>
-    </Page>
-  );
-}
-// src/app/vi/page.tsx
-import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import { fmtLua } from "@/lib/utils";
-import Link from "next/link";
-export default async function WalletPage() {
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return <Page title="Ví"><p>Vui lòng <Link href="/dang-nhap" className="text-[#22C55E]">đăng nhập</Link>.</p></Page>;
-  const { data: w } = await supa.from("wallets").select("*").eq("user_id", user.id).single();
-  const { data: tx } = await supa.from("wallet_transactions").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
-  return (
-    <Page title="Ví Lúa">
-      <div className="p-5 rounded-2xl bg-gradient-to-br from-[#22C55E] to-emerald-700 text-[#0B1B33]">
-        <p className="text-sm opacity-80">Số dư khả dụng</p>
-        <p className="text-3xl font-extrabold">{fmtLua(w?.available_balance || 0)}</p>
-        <Link href="/rut-tien" className="block mt-4 py-3 text-center rounded-xl bg-[#0B1B33] text-white font-bold">Rút tiền</Link>
-      </div>
-      <b>Lịch sử giao dịch</b>
-      <div className="space-y-2">
-        {(tx || []).map((x: any) => (
-          <div key={x.id} className="flex justify-between p-3 rounded-xl bg-white/5">
-            <div><p className="text-sm">{x.description}</p><p className="text-xs text-white/50">{new Date(x.created_at).toLocaleString("vi-VN")}</p></div>
-            <b className={x.amount >= 0 ? "text-[#22C55E]" : "text-red-400"}>{x.amount >= 0 ? "+" : ""}{fmtLua(x.amount)}</b>
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
-        // src/app/rut-tien/page.tsx
-"use client";
-import { useEffect, useState } from "react";
-import { Page } from "@/components/Layout";
-import { createClient } from "@/lib/supabase/client";
-import { createWithdrawal, cancelWithdrawal } from "@/app/actions";
-import { fmtLua } from "@/lib/utils";
-export default function Withdraw() {
-  const [wallet, setWallet] = useState<any>(null);
-  const [methods, setMethods] = useState<any[]>([]);
-  const [list, setList] = useState<any[]>([]);
-  const [amount, setAmount] = useState("");
-  const [method, setMethod] = useState("");
-  const [name, setName] = useState("");
-  const [bank, setBank] = useState("Vietcombank");
-  const [acc, setAcc] = useState("");
-  const [msg, setMsg] = useState("");
-  useEffect(() => {
-    const s = createClient();
-    (async () => {
-      const { data: { user } } = await s.auth.getUser();
-      if (!user) return;
-      const w = await s.from("wallets").select("*").eq("user_id", user.id).single(); setWallet(w.data);
-      const m = await s.from("payment_methods").select("*").eq("status", "active"); setMethods(m.data || []);
-      if (m.data?.[0]) setMethod(m.data[0].id);
-      const l = await s.from("withdrawals").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20); setList(l.data || []);
-    })();
-  }, []);
-  async function submit() {
-    if (!amount || Number(amount) < 10000) return setMsg("Tối thiểu 10.000 Lúa");
-    const r: any = await createWithdrawal({ methodId: method, amount: Number(amount), accountName: name, accountNumber: acc, bankName: bank });
-    if (r.error) return setMsg(r.error);
-    setMsg("Đã gửi yêu cầu, chờ Admin duyệt."); location.reload();
-  }
-  return (
-    <Page title="Rút tiền">
-      <div className="p-4 rounded-2xl bg-white/5"><p className="text-sm text-white/60">Số dư khả dụng</p><p className="text-2xl font-bold text-[#22C55E]">{fmtLua(wallet?.available_balance || 0)}</p></div>
-      <div className="p-4 rounded-2xl bg-white/5 space-y-3">
-        <input value={amount} onChange={(e) => setAmount(e.target.value)} inputMode="numeric" placeholder="VD: 50000" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <div className="flex gap-2">{["50000", "100000", "200000"].map((v) => <button key={v} onClick={() => setAmount(v)} className="flex-1 py-2 rounded-lg bg-white/10 text-sm">{fmtLua(Number(v))}</button>)}</div>
-        <select value={method} onChange={(e) => setMethod(e.target.value)} className="w-full p-3 rounded-xl bg-[#122745]">{methods.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select>
-        <input value={bank} onChange={(e) => setBank(e.target.value)} placeholder="Ngân hàng" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Tên chủ tài khoản" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <input value={acc} onChange={(e) => setAcc(e.target.value)} placeholder="Số tài khoản" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <p className="text-xs text-amber-300">⚠️ Không bao giờ nhập mật khẩu / OTP ngân hàng.</p>
-        <p className="text-sm">Phí: 0 • Thực nhận: <b className="text-[#22C55E]">{fmtLua(Number(amount) || 0)}</b></p>
-        <button onClick={submit} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Gửi yêu cầu rút</button>
-        {msg && <p className="text-sm text-[#22C55E]">{msg}</p>}
-      </div>
-      <b>Yêu cầu của bạn</b>
-      <div className="space-y-2">
-        {list.map((w: any) => (
-          <div key={w.id} className="p-3 rounded-xl bg-white/5 flex justify-between">
-            <div><p className="font-bold">{fmtLua(w.amount)}</p><p className="text-xs text-white/50">{new Date(w.requested_at).toLocaleString("vi-VN")}</p>{w.rejection_reason && <p className="text-xs text-red-400">Lý do: {w.rejection_reason}</p>}{w.payment_reference && <p className="text-xs text-[#22C55E]">Mã GD: {w.payment_reference}</p>}</div>
-            <div className="text-right"><span className="text-xs px-2 py-1 rounded-full bg-white/10">{w.status}</span>{w.status === "pending" && <button onClick={async () => { await cancelWithdrawal(w.id); location.reload(); }} className="block text-xs text-red-400 mt-2">Hủy</button>}</div>
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
-      "use client";
-import { useEffect, useState } from "react";
-import { Page } from "@/components/Layout";
-import { createClient } from "@/lib/supabase/client";
-import { adminReviewWithdrawal, adminMarkPaid } from "@/app/actions";
-import { fmtLua } from "@/lib/utils";
-
-export default function AdminWithdraw() {
-  const [list, setList] = useState<any[]>([]);
-  const [ref, setRef] = useState<Record<string, string>>({});
-  useEffect(() => {
-    createClient().from("withdrawals").select("*").order("created_at", { ascending: false }).limit(100)
-      .then(({ data }) => setList(data || []));
-  }, []);
-  return (
-    <Page title="Duyệt rút tiền">
-      <b>Yêu cầu rút tiền ({list.length})</b>
-      <div className="space-y-3">
-        {list.map((w: any) => (
-          <div key={w.id} className="p-4 rounded-2xl bg-white/5">
-            <div className="flex justify-between"><b>{fmtLua(w.amount)}</b><span className="text-xs px-2 py-1 rounded-full bg-white/10">{w.status}</span></div>
-            <p className="text-sm">Thực nhận: {fmtLua(w.net_amount)} • Phí: {fmtLua(w.fee)}</p>
-            {w.status === "pending" && (
-              <div className="flex gap-2 mt-3">
-                <button onClick={async () => { await adminReviewWithdrawal(w.id, "approve"); location.reload(); }} className="flex-1 py-2 rounded-lg bg-[#22C55E] text-[#0B1B33] font-bold">Duyệt</button>
-                <button onClick={async () => { const r = prompt("Lý do từ chối:"); if (r) { await adminReviewWithdrawal(w.id, "reject", r); location.reload(); } }} className="flex-1 py-2 rounded-lg bg-red-500/20 text-red-400 font-bold">Từ chối</button>
-              </div>
-            )}
-            {w.status === "approved" && <button onClick={async () => { await adminReviewWithdrawal(w.id, "processing"); location.reload(); }} className="w-full mt-3 py-2 rounded-lg bg-white/10 font-bold">Chuyển sang Đang xử lý</button>}
-            {w.status === "processing" && (
-              <div className="flex gap-2 mt-3">
-                <input placeholder="Mã giao dịch chuyển tiền thật" value={ref[w.id] || ""} onChange={(e) => setRef({ ...ref, [w.id]: e.target.value })} className="flex-1 p-2 rounded-lg bg-white/10 outline-none text-sm" />
-                <button onClick={async () => { if (!ref[w.id]) return alert("Nhập mã GD"); await adminMarkPaid(w.id, ref[w.id]); location.reload(); }} className="px-4 rounded-lg bg-[#22C55E] text-[#0B1B33] font-bold">Đã trả</button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
-    /** @type {import('next').NextConfig} */
-const config = {};
-export default config;
-    {
-  "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [{ "name": "next" }],
-    "paths": { "@/*": ["./src/*"] }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
-}
-    module.exports = { plugins: { tailwindcss: {}, autoprefixer: {} } };
-    export type Task = {
-  id: string; title: string; description: string; instructions: string;
-  task_url: string | null; type: "link" | "app"; reward_amount: number;
-  verification_type: "code" | "manual" | "partner_api";
-  max_completions: number | null; per_user_limit: number;
-  start_at: string | null; end_at: string | null; status: string;
-  category_id: string | null;
-};
-export type Wallet = {
-  available_balance: number; pending_balance: number; locked_balance: number;
-  total_earned: number; total_withdrawn: number;
-};
-export type WalletTxn = {
-  id: string; transaction_type: string; amount: number;
-  balance_before: number; balance_after: number; description: string; created_at: string;
-};
-export type Withdrawal = {
-  id: string; amount: number; fee: number; net_amount: number;
-  payment_method: string; status: string; payment_reference: string | null;
-  rejection_reason: string | null; requested_at: string; paid_at: string | null;
-};
-    export async function getDeviceId(): Promise<string> {
-  try {
-    let id = localStorage.getItem("klo_device");
-    if (!id) { id = crypto.randomUUID(); localStorage.setItem("klo_device", id); }
-    return id;
-  } catch { return "unknown"; }
-}
-export async function sha256Hex(s: string) {
-  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, "0")).join("");
-}
-      "use client";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { Page } from "@/components/Layout";
-import Link from "next/link";
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [pw, setPw] = useState("");
-  const [msg, setMsg] = useState("");
-  async function go() {
-    const s = createClient();
-    const { error } = await s.auth.signInWithPassword({ email, password: pw });
-    if (error) return setMsg(error.message);
-    location.href = "/";
-  }
-  return (
-    <Page title="Đăng nhập">
-      <div className="p-5 rounded-2xl bg-white/5 space-y-3">
-        <h1 className="text-xl font-bold">Đăng nhập</h1>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Mật khẩu" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <button onClick={go} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Đăng nhập</button>
-        {msg && <p className="text-red-400 text-sm">{msg}</p>}
-        <p className="text-sm text-center">Chưa có tài khoản? <Link href="/dang-ky" className="text-[#22C55E]">Đăng ký</Link></p>
-      </div>
-    </Page>
-  );
-}
-      "use client";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { Page } from "@/components/Layout";
-import Link from "next/link";
-export default function Register() {
-  const [email, setEmail] = useState("");
-  const [pw, setPw] = useState("");
-  const [msg, setMsg] = useState("");
-  async function go() {
-    const s = createClient();
-    const { error } = await s.auth.signUp({ email, password: pw });
-    if (error) return setMsg(error.message);
-    setMsg("Đăng ký thành công! Kiểm tra email nếu cần xác minh, sau đó đăng nhập.");
-  }
-  return (
-    <Page title="Đăng ký">
-      <div className="p-5 rounded-2xl bg-white/5 space-y-3">
-        <h1 className="text-xl font-bold">Đăng ký</h1>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Mật khẩu (tối thiểu 6 ký tự)" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <button onClick={go} className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Tạo tài khoản</button>
-        {msg && <p className="text-[#22C55E] text-sm">{msg}</p>}
-        <p className="text-sm text-center">Đã có tài khoản? <Link href="/dang-nhap" className="text-[#22C55E]">Đăng nhập</Link></p>
-      </div>
-    </Page>
-  );
-}
-      "use client";
-import { useEffect, useState } from "react";
-import { Page } from "@/components/Layout";
-import { createClient } from "@/lib/supabase/client";
-export default function Profile() {
-  const [user, setUser] = useState<any>(null);
-  const [device, setDevice] = useState("");
-  useEffect(() => {
-    createClient().auth.getUser().then(({ data }) => setUser(data.user));
-    setDevice(localStorage.getItem("klo_device") || "");
-  }, []);
-  const mask = (s: string) => (s ? s.slice(0, 8) + "…" + s.slice(-4) : "—");
-  return (
-    <Page title="Tài khoản">
-      <div className="p-5 rounded-2xl bg-white/5 flex items-center gap-3">
-        <div className="w-14 h-14 rounded-full bg-[#22C55E] flex items-center justify-center text-2xl font-bold text-[#0B1B33]">T</div>
-        <div><b>{user?.email || "—"}</b><p className="text-sm text-white/60">ID: {user?.id?.slice(0, 8)}…</p></div>
-      </div>
-      <div className="p-4 rounded-2xl bg-white/5 space-y-2 text-sm">
-        <p className="font-bold">Chống gian lận</p>
-        <p>IP hiện tại: <span className="text-white/60">lấy từ server khi thao tác (không tin IP client gửi)</span></p>
-        <p>Device ID: <span className="text-[#22C55E]">{mask(device)}</span></p>
-        <p>Trạng thái: <span className="text-[#22C55E]">Normal</span></p>
-        <p className="text-xs text-white/50">Website dùng nhận diện thiết bị dạng hash để chống tạo nhiều tài khoản, đổi IP / VPN không giúp vượt quota.</p>
-      </div>
-      <button onClick={async () => { await createClient().auth.signOut(); location.href = "/dang-nhap"; }} className="w-full py-3 rounded-xl bg-red-500/20 text-red-400 font-bold">Đăng xuất</button>
-    </Page>
-  );
-}
-    import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import { fmtLua } from "@/lib/utils";
-export default async function History() {
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  let tx: any[] = [];
-  if (user) {
-    const r = await supa.from("wallet_transactions").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(100);
-    tx = r.data || [];
-  }
-  return (
-    <Page title="Lịch sử">
-      <b>Lịch sử giao dịch</b>
-      <div className="space-y-2 mt-2">
-        {tx.map((x: any) => (
-          <div key={x.id} className="flex justify-between p-3 rounded-xl bg-white/5">
-            <div><p className="text-sm">{x.description}</p><p className="text-xs text-white/50">{new Date(x.created_at).toLocaleString("vi-VN")}</p></div>
-            <b className={x.amount >= 0 ? "text-[#22C55E]" : "text-red-400"}>{x.amount >= 0 ? "+" : ""}{fmtLua(x.amount)}</b>
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
-    import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import Link from "next/link";
-import { fmtLua } from "@/lib/utils";
-export default async function Admin() {
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return <Page title="Admin"><p>Vui lòng đăng nhập.</p></Page>;
-  const { data: admin } = await supa.from("admin_users").select("*").eq("user_id", user.id).single();
-  if (!admin) return <Page title="Admin"><p className="text-red-400">Bạn không có quyền Admin. Role chỉ cấp qua SQL bootstrap, không cấp từ frontend.</p></Page>;
-  const u = await supa.from("profiles").select("id", { count: "exact", head: true });
-  const t = await supa.from("tasks").select("id", { count: "exact", head: true });
-  const wd = await supa.from("withdrawals").select("amount,status");
-  const pending = (wd.data || []).filter((x: any) => x.status === "pending");
-  const paid = (wd.data || []).filter((x: any) => x.status === "paid").reduce((s: number, x: any) => s + x.amount, 0);
-  return (
-    <Page title="Admin Dashboard">
-      <div className="grid grid-cols-2 gap-3">
-        <div className="p-4 rounded-2xl bg-white/5"><p className="text-xs text-white/60">Người dùng</p><p className="text-2xl font-bold">{u.count || 0}</p></div>
-        <div className="p-4 rounded-2xl bg-white/5"><p className="text-xs text-white/60">Nhiệm vụ</p><p className="text-2xl font-bold">{t.count || 0}</p></div>
-        <div className="p-4 rounded-2xl bg-white/5"><p className="text-xs text-white/60">Rút chờ duyệt</p><p className="text-2xl font-bold text-amber-400">{pending.length}</p></div>
-        <div className="p-4 rounded-2xl bg-white/5"><p className="text-xs text-white/60">Đã trả</p><p className="text-2xl font-bold text-[#22C55E]">{fmtLua(paid)}</p></div>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        {[["/admin/nguoi-dung", "Quản lý thành viên"], ["/admin/nhiem-vu", "Quản lý nhiệm vụ"], ["/admin/rut-tien", "Duyệt rút tiền"], ["/admin/chong-gian-lan", "Chống gian lận"], ["/admin/nhat-ky", "Nhật ký Admin"]].map(([h, l]) => (
-          <Link key={h} href={h} className="p-4 rounded-2xl bg-white/5 font-bold text-center">{l}</Link>
-        ))}
-      </div>
-      <p className="text-xs text-white/50">Mọi thao tác Admin đều ghi audit log, không xóa được lịch sử tài chính.</p>
-    </Page>
-  );
-}
-    import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import { revalidatePath } from "next/cache";
-import { fmtLua } from "@/lib/utils";
-
-async function createTask(form: FormData) {
-  "use server";
-  const supa = createServerSupabase();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return;
-  const title = String(form.get("title"));
-  const payload = {
-    title,
-    slug: title.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now(),
-    description: String(form.get("description")),
-    instructions: String(form.get("instructions")),
-    task_url: String(form.get("task_url")) || null,
-    type: String(form.get("type")),
-    reward_amount: Number(form.get("reward_amount")),
-    verification_type: String(form.get("verification_type")),
-    max_completions: Number(form.get("max_completions")) || null,
-    per_user_limit: 1,
-    status: "active",
-    created_by: user.id,
-    category_id: String(form.get("category_id")) || null,
-  };
-  await supa.from("tasks").insert(payload);
-  revalidatePath("/admin/nhiem-vu");
-}
-
-export default async function AdminTasks() {
-  const supa = createServerSupabase();
-  const { data: tasks } = await supa.from("tasks").select("*").order("created_at", { ascending: false }).limit(100);
-  const { data: cats } = await supa.from("task_categories").select("*").eq("status", "active");
-  return (
-    <Page title="Quản lý nhiệm vụ">
-      <form action={createTask} className="p-4 rounded-2xl bg-white/5 space-y-2">
-        <b>Tạo nhiệm vụ mới</b>
-        <input name="title" required placeholder="Tên nhiệm vụ" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <textarea name="description" required placeholder="Mô tả" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <textarea name="instructions" required placeholder="Hướng dẫn từng bước" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <input name="task_url" placeholder="Link nhiệm vụ (https://...)" className="w-full p-3 rounded-xl bg-white/10 outline-none" />
-        <div className="flex gap-2">
-          <select name="type" className="flex-1 p-3 rounded-xl bg-[#122745]"><option value="link">Link</option><option value="app">App</option></select>
-          <select name="verification_type" className="flex-1 p-3 rounded-xl bg-[#122745]"><option value="code">Mã + CAPTCHA</option><option value="manual">Admin duyệt</option><option value="partner_api">Partner API</option></select>
-        </div>
-        <div className="flex gap-2">
-          <input name="reward_amount" required type="number" placeholder="Thưởng Lúa" className="flex-1 p-3 rounded-xl bg-white/10 outline-none" />
-          <input name="max_completions" type="number" placeholder="Quota tổng" className="flex-1 p-3 rounded-xl bg-white/10 outline-none" />
-        </div>
-        <select name="category_id" className="w-full p-3 rounded-xl bg-[#122745]">{(cats || []).map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}</select>
-        <button className="w-full py-3 rounded-xl bg-[#22C55E] text-[#0B1B33] font-bold">Tạo nhiệm vụ</button>
-      </form>
-      <b>Danh sách ({(tasks || []).length})</b>
-      {(tasks || []).map((t: any) => (
-        <div key={t.id} className="p-3 rounded-xl bg-white/5 flex justify-between">
-          <div><b>{t.title}</b><p className="text-xs text-white/50">{t.status} • {t.verification_type}</p></div>
-          <b className="text-[#22C55E]">+{fmtLua(t.reward_amount)}</b>
-        </div>
-      ))}
-    </Page>
-  );
-}
-        import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-import { fmtLua } from "@/lib/utils";
-export default async function AdminUsers() {
-  const supa = createServerSupabase();
-  const { data: users } = await supa.from("profiles").select("*,wallets(*)").order("created_at", { ascending: false }).limit(100);
-  return (
-    <Page title="Quản lý thành viên">
-      <b>Thành viên ({(users || []).length})</b>
-      <div className="space-y-2">
-        {(users || []).map((u: any) => (
-          <div key={u.id} className="p-3 rounded-xl bg-white/5">
-            <div className="flex justify-between"><b>{u.username}</b><span className="text-xs px-2 py-1 rounded-full bg-white/10">{u.account_status} • risk {u.risk_score}</span></div>
-            <p className="text-xs text-white/50">{u.email}</p>
-            <p className="text-sm">Ví: <b className="text-[#22C55E]">{fmtLua(u.wallets?.[0]?.available_balance || 0)}</b> • Đã kiếm: {fmtLua(u.wallets?.[0]?.total_earned || 0)}</p>
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-white/50">Khóa / mở khóa: thực hiện qua SQL / RPC admin (có audit log). Không xóa lịch sử giao dịch.</p>
-    </Page>
-  );
-}
-          import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-export default async function Fraud() {
-  const supa = createServerSupabase();
-  const { data: events } = await supa.from("fraud_events").select("*").order("created_at", { ascending: false }).limit(100);
-  const mask = (s: string) => (s ? s.slice(0, 8) + "…" + s.slice(-4) : "—");
-  return (
-    <Page title="Chống gian lận">
-      <b>Cảnh báo gian lận ({(events || []).length})</b>
-      <div className="space-y-2">
-        {(events || []).length === 0 ? <p className="text-white/60 text-sm">Chưa có cảnh báo.</p>
-          : (events || []).map((e: any) => (
-            <div key={e.id} className="p-3 rounded-xl bg-white/5">
-              <div className="flex justify-between"><b>{e.event_type}</b><span className="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-400">{e.severity} • {e.risk_score}</span></div>
-              <p className="text-sm">{e.reason}</p>
-              <p className="text-xs text-white/50">Device: {mask(e.device_identifier_hash || "")} • {new Date(e.created_at).toLocaleString("vi-VN")}</p>
-            </div>
-          ))}
-      </div>
-    </Page>
-  );
-}
-         import { createServerSupabase } from "@/lib/supabase/server";
-import { Page } from "@/components/Layout";
-export default async function Audit() {
-  const supa = createServerSupabase();
-  const { data: logs } = await supa.from("admin_audit_logs").select("*").order("created_at", { ascending: false }).limit(100);
-  return (
-    <Page title="Nhật ký Admin">
-      <b>Nhật ký ({(logs || []).length})</b>
-      <div className="space-y-2">
-        {(logs || []).map((l: any) => (
-          <div key={l.id} className="p-3 rounded-xl bg-white/5">
-            <b>{l.action}</b>
-            <p className="text-xs text-white/50">{l.target_type} • {new Date(l.created_at).toLocaleString("vi-VN")}</p>
-            {l.reason && <p className="text-sm">Lý do: {l.reason}</p>}
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
-          # KIẾM LÚA ONLINE — Production
-
-## 1. SQL
-Chạy PART 1–12 trong Supabase SQL Editor theo thứ tự. Không đổi tên bảng/enum.
-
-## 2. Tạo Super Admin
-Đăng ký 1 tài khoản ở /dang-ky, lấy UUID của nó, chạy trong SQL Editor:
-insert into public.admin_users(user_id,role,status)
-values ('<uuid-cua-admin>','super_admin','active')
-on conflict (user_id) do update set role='super_admin';
-
-## 3. Chạy
-cp .env.example .env.local
-# điền NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY
-npm install
-npm run dev
-# mở http://localhost:3000
-
-## 4. Deploy Vercel
-Import repo, thêm 2 biến NEXT_PUBLIC_* trên, bấm Deploy.
-Không thêm SERVICE_ROLE_KEY.
-
-## 5. Kiểm tra
-- Đăng ký -> tạo task ở /admin/nhiem-vu
-- Thêm mã vào task_verification_codes: code_hash = sha256(UPPER(TRIM(code)))
-- User: Bắt đầu -> nhập mã -> CAPTCHA -> nhận Lúa
-- Kiểm tra wallet_transactions có dòng task_reward
-- Rút tiền: tạo yêu cầu -> Admin duyệt -> processing -> nhập mã GD thật -> Paid
-- Từ chối -> tiền hoàn về available
-          Chạy SQL PART 1–12 đã xuất trong các tin nhắn trước, theo thứ tự.
-File này chỉ là chỉ dẫn, không chứa SERVICE_ROLE_KEY.
-          node_modules
-.next
-.env.local
-.env
-*.zip
-.DS_Store
-          import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-
-export async function middleware(request: NextRequest) {
-  const res = NextResponse.next();
-  const supa = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return request.cookies.getAll(); },
-        setAll(v) { v.forEach(({ name, value, options }) => res.cookies.set(name, value, options)); },
-      },
-    }
-  );
-  await supa.auth.getUser();
-  return res;
-}
-export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"] };
-          "use client";
-import { useEffect, useState } from "react";
-import { Page } from "@/components/Layout";
-import { createClient } from "@/lib/supabase/client";
-import { adminReviewManual } from "@/app/actions";
-
-export default function AdminManual() {
-  const [list, setList] = useState<any[]>([]);
-  useEffect(() => {
-    createClient().from("task_completions").select("*").eq("status", "pending_review").order("created_at", { ascending: false }).limit(100)
-      .then(({ data }) => setList(data || []));
-  }, []);
-  return (
-    <Page title="Duyệt thủ công">
-      <b>Chờ duyệt thủ công ({list.length})</b>
-      <div className="space-y-3">
-        {list.length === 0 && <p className="text-white/60 text-sm">Không có nhiệm vụ nào chờ duyệt.</p>}
-        {list.map((c: any) => (
-          <div key={c.id} className="p-4 rounded-2xl bg-white/5">
-            <p className="text-sm">Task: {c.task_id}</p>
-            <p className="text-sm">User: {c.user_id}</p>
-            <p className="text-xs text-white/50">Bằng chứng: {c.evidence || "—"}</p>
-            <div className="flex gap-2 mt-3">
-              <button onClick={async () => { await adminReviewManual(c.id, true); location.reload(); }} className="flex-1 py-2 rounded-lg bg-[#22C55E] text-[#0B1B33] font-bold">Duyệt + Cộng Lúa</button>
-              <button onClick={async () => { const r = prompt("Lý do từ chối:"); if (r) { await adminReviewManual(c.id, false, r); location.reload(); } }} className="flex-1 py-2 rounded-lg bg-red-500/20 text-red-400 font-bold">Từ chối</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Page>
-  );
-}
+renderTasks(); renderTx(); renderWd();
+</script>
+</body>
+</html>
