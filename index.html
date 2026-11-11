@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -5,214 +6,83 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kiếm Lúa Online</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-body{background:#0B1B33;color:#fff;min-height:100vh;padding-bottom:90px}
-.top{position:sticky;top:0;background:#0B1B33;z-index:10;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;gap:8px;align-items:center;font-weight:800}
-.logo span{width:32px;height:32px;background:#22C55E;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.wrap{max-width:430px;margin:0 auto;padding:14px}
-.card{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;margin-bottom:12px}
-.wallet{background:linear-gradient(135deg,#22C55E,#059669);color:#071224;border-radius:16px;padding:18px;margin-bottom:12px}
-.wallet h1{font-size:32px;margin:6px 0}
-.btn{width:100%;padding:13px;border:none;border-radius:12px;background:#22C55E;color:#071224;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
-.btn2{width:100%;padding:13px;border:none;border-radius:12px;background:#071224;color:#fff;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
-.btn-ghost{background:rgba(255,255,255,.12);color:#fff}
-input,select{width:100%;padding:12px;border-radius:12px;border:none;background:rgba(255,255,255,.12);color:#fff;outline:none;margin-top:8px;font-size:15px}
-input::placeholder{color:rgba(255,255,255,.5)}
-select option{color:#000}
-.row{display:flex;gap:8px}
-.row>div{flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:10px;text-align:center}
-.row b{font-size:15px}
-.small{font-size:12px;opacity:.7}
-.green{color:#22C55E;font-weight:800}
-.red{color:#ff6b6b}
-.yellow{color:#facc15}
-.task{cursor:pointer}
-.chip{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(34,197,94,.2);color:#22C55E;font-size:12px;margin-right:6px}
-.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.12)}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#0B1B33;border-top:1px solid rgba(255,255,255,.1);z-index:20}
-.bottom .in{max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
-.bottom button{background:none;border:none;color:rgba(255,255,255,.6);padding:10px 0;font-size:11px;cursor:pointer}
-.bottom button.on{color:#22C55E;font-weight:800}
-.hidden{display:none!important}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50;display:flex;align-items:flex-end;justify-content:center}
-.modal .box{background:#122745;width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:18px;padding-bottom:30px;max-height:90vh;overflow:auto}
-.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#22C55E;color:#071224;padding:10px 16px;border-radius:999px;font-weight:800;z-index:100;font-size:14px}
-.bar{display:flex;align-items:end;gap:6px;height:80px;margin-top:10px}
-.bar div{flex:1;background:#22C55E;border-radius:6px 6px 0 0;text-align:center;font-size:11px;padding-top:4px}
-.bar div.off{background:rgba(255,255,255,.15)}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f8ef;font-family:Arial,sans-serif;color:#243b27}
+header{background:linear-gradient(135deg,#137b38,#36a852);color:white;padding:24px 18px;border-radius:0 0 25px 25px}
+header h2{margin:0 0 6px}
+header p{margin:0;font-size:13px}
+.container{padding:16px;max-width:600px;margin:auto}
+.balance{background:linear-gradient(120deg,#ffdc65,#fff0a7);padding:20px;border-radius:18px;margin-top:16px;color:#493b13}
+.balance small{font-size:13px}
+.balance h1{font-size:32px;margin:10px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.stat,.card{background:white;padding:16px;border-radius:15px;box-shadow:0 3px 12px #00000008}
+.stat strong{display:block;font-size:20px;color:#218444;margin-top:8px}
+h3{font-size:17px;margin:23px 0 12px}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.menu button{background:white;border:0;border-radius:14px;padding:15px 5px;color:#276d3b;font-weight:bold}
+.menu span{display:block;font-size:25px;margin-bottom:8px}
+.task{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.task p{font-size:13px;color:#777;margin:5px 0 0}
+.btn{background:#249648;color:white;border:0;padding:10px 15px;border-radius:10px;font-weight:bold}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px 2px;box-shadow:0 -3px 15px #0001}
+.bottom button{border:0;background:none;color:#39804b;font-size:11px}
+.bottom span{display:block;font-size:19px;margin-bottom:4px}
+main{padding-bottom:85px}
+.notice{background:#e7f6e8;color:#286d3a;padding:12px;border-radius:12px;font-size:13px;margin-top:15px}
 </style>
 </head>
 <body>
-
-<div class="top"><div class="logo"><span>🌾</span><div>KIẾM LÚA ONLINE<br><small style="font-weight:400;opacity:.6">1 Lúa = 1 VNĐ</small></div></div><div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,.2);display:flex;align-items:center;justify-content:center;font-weight:800">T</div></div>
-
-<div class="wrap">
-
-<!-- TRANG CHỦ -->
-<div id="page-home">
-<div class="wallet"><div class="small">Số dư khả dụng</div><h1 id="balanceHome">128.500 Lúa</h1><div class="small">Đang chờ: 12.000 Lúa • Đã kiếm: 342.000 Lúa</div><div class="row" style="margin-top:12px"><button class="btn2" onclick="go('rut-tien')">Rút tiền</button><button class="btn" style="background:#fff" onclick="go('vi')">Xem ví</button></div></div>
-<div class="row"><div><div class="small">Đã kiếm</div><b>342.000</b></div><div><div class="small">Hoàn thành</div><b>18</b></div><div><div class="small">Đã rút</div><b>210.000</b></div></div>
-<div class="card"><b>Thu nhập 7 ngày</b><div class="bar"><div style="height:30%">2k</div><div style="height:45%">3k</div><div style="height:35%">2k</div><div style="height:60%">5k</div><div style="height:50%">4k</div><div style="height:75%">7k</div><div style="height:95%;background:#22C55E">8.5k</div></div><div class="small" style="text-align:center;margin-top:4px">T2 T3 T4 T5 T6 T7 CN</div></div>
-<div class="card"><b>Nhiệm vụ nổi bật</b><div style="margin-top:10px" onclick="openTask(0)" class="task"><b>Xem video giới thiệu 30s</b><span class="green" style="float:right">+5.000 Lúa</span><div class="small">Xem hết video, lấy mã xác nhận</div></div><hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:10px 0"><div onclick="openTask(1)" class="task"><b>Tải app ngân hàng</b><span class="green" style="float:right">+15.000 Lúa</span><div class="small">Tải app, đăng ký, lấy mã</div></div></div>
-<div class="card"><b>Hoạt động gần đây</b><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Xem video</span><b class="green">+5.000</b></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Tải app</span><b class="green">+3.500</b></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span>Rút tiền đã duyệt</span><b class="red">-50.000</b></div></div>
+<header>
+<h2>🌾 KIẾM LÚA ONLINE</h2>
+<p>Chăm chỉ mỗi ngày – Tích lũy từng hạt lúa!</p>
+</header>
+<main class="container">
+<section class="balance">
+<small>💰 SỐ DƯ KHẢ DỤNG (DEMO)</small>
+<h1>0 Lúa</h1>
+<small>Đây là giao diện thử nghiệm, chưa có tiền thật.</small>
+</section>
+<div class="stats">
+<div class="stat">🌱 Lúa chờ duyệt<strong>0</strong></div>
+<div class="stat">📈 Nhiệm vụ<strong>0</strong></div>
 </div>
-
-<!-- NHIỆM VỤ -->
-<div id="page-nhiem-vu" class="hidden">
-<input id="searchTask" placeholder="Tìm nhiệm vụ..." oninput="renderTasks()">
-<div style="margin:10px 0"><button class="chip" onclick="filter='all';renderTasks()">Tất cả</button><button class="chip" onclick="filter='link';renderTasks()">Link</button><button class="chip" onclick="filter='app';renderTasks()">App</button></div>
-<div id="taskList"></div>
+<h3>🌻 Menu chính</h3>
+<div class="menu">
+<button onclick="show('Tổng quan')"><span>🏠</span>Tổng quan</button>
+<button onclick="show('Nhiệm vụ')"><span>🎯</span>Nhiệm vụ</button>
+<button onclick="show('Tuyển Ref')"><span>👥</span>Tuyển Ref</button>
+<button onclick="show('Phúc lợi')"><span>🎁</span>Phúc lợi</button>
+<button onclick="show('Rút tiền')"><span>💸</span>Rút tiền</button>
+<button onclick="show('Lịch sử')"><span>📜</span>Lịch sử</button>
+<button onclick="show('Hồ sơ')"><span>👤</span>Hồ sơ</button>
 </div>
-
-<!-- VÍ -->
-<div id="page-vi" class="hidden">
-<div class="wallet"><div class="small">Số dư khả dụng</div><h1 id="balanceVi">128.500 Lúa</h1><div class="small">Đang chờ: 12.000 • Đã khóa: 0 • Đã rút: 210.000</div></div>
-<div class="card"><b>Lịch sử giao dịch</b><div id="txList" style="margin-top:8px"></div></div>
-</div>
-
-<!-- RÚT TIỀN -->
-<div id="page-rut-tien" class="hidden">
-<div class="card"><div class="small">Số dư khả dụng</div><h2 id="balanceRut" style="color:#22C55E">128.500 Lúa</h2></div>
+<h3>🔥 Nhiệm vụ nổi bật</h3>
 <div class="card">
-<b>Rút tiền</b>
-<input id="wdAmount" type="number" placeholder="VD: 50000" oninput="updateWd()">
-<div class="row" style="margin-top:8px"><button class="btn btn-ghost" onclick="setWd(50000)">50k</button><button class="btn btn-ghost" onclick="setWd(100000)">100k</button><button class="btn btn-ghost" onclick="setWd(200000)">200k</button></div>
-<select id="wdMethod"><option>Chuyển khoản ngân hàng - Vietcombank</option><option>MoMo</option><option>Chuyển khoản - BIDV</option></select>
-<input id="wdName" placeholder="Tên chủ tài khoản">
-<input id="wdAcc" placeholder="Số tài khoản">
-<p class="small" style="color:#facc15;margin-top:8px">⚠️ Không bao giờ nhập mật khẩu / OTP ngân hàng.</p>
-<p style="margin-top:8px">Phí: 0 • Thực nhận: <b class="green" id="wdNet">0 Lúa</b></p>
-<button class="btn" onclick="submitWd()">Gửi yêu cầu rút</button>
+<div class="task">
+<div><b>🔗 Link rút gọn</b><p>Hoàn thành nhiệm vụ nhận thưởng</p></div>
+<button class="btn" onclick="show('Nhiệm vụ Link rút gọn')">Xem</button>
 </div>
-<div class="card"><b>Yêu cầu của bạn</b><div id="wdList" style="margin-top:8px"></div></div>
 </div>
-
-<!-- TÀI KHOẢN -->
-<div id="page-ca-nhan" class="hidden">
-<div class="card" style="display:flex;gap:12px;align-items:center"><div style="width:54px;height:54px;border-radius:50%;background:#22C55E;color:#071224;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800">T</div><div><b>Tub Hmoob</b><div class="small">tub.hmoob.477386</div></div></div>
-<div class="card"><b>Chống gian lận</b><p class="small" style="margin-top:8px">IP hiện tại: 113.176.xxx.xxx</p><p class="small">Device ID: b74a9a60…9f2a</p><p class="small">Trạng thái: <span class="green">Normal</span></p><p class="small" style="margin-top:8px">Không dùng VPN / không tạo nhiều tài khoản để gian lận.</p></div>
-<div class="card"><b>Admin</b><p class="small" style="margin-top:6px">Admin duyệt rút tiền và duyệt nhiệm vụ thủ công trong Supabase. Không cấp quyền từ frontend.</p><button class="btn btn-ghost" onclick="showToast('Bạn không có quyền Admin')">Mở trang Admin</button></div>
+<div class="card" style="margin-top:10px">
+<div class="task">
+<div><b>📱 Nhiệm vụ App</b><p>Khám phá ứng dụng và nhận thưởng</p></div>
+<button class="btn" onclick="show('Nhiệm vụ App')">Xem</button>
 </div>
-
 </div>
-
-<!-- BOTTOM NAV -->
-<div class="bottom"><div class="in">
-<button id="nav-home" class="on" onclick="go('home')">🏠<br>Trang chủ</button>
-<button id="nav-nhiem-vu" onclick="go('nhiem-vu')">📋<br>Nhiệm vụ</button>
-<button id="nav-vi" onclick="go('vi')">👛<br>Ví</button>
-<button id="nav-rut-tien" onclick="go('rut-tien')">💵<br>Rút tiền</button>
-<button id="nav-ca-nhan" onclick="go('ca-nhan')">👤<br>Tài khoản</button>
-</div></div>
-
-<!-- MODAL NHIỆM VỤ -->
-<div id="taskModal" class="modal hidden"><div class="box">
-<div style="display:flex;justify-content:space-between"><h3 id="taskTitle"></h3><button onclick="closeModal()" style="background:none;border:none;color:#fff;font-size:22px">×</button></div>
-<p class="green" id="taskReward" style="margin:8px 0"></p>
-<p class="small" id="taskDesc"></p>
-<p style="margin-top:10px"><b>Hướng dẫn:</b><br>1. Bấm Bắt đầu<br>2. Thực hiện nhiệm vụ, lấy mã<br>3. Nhập mã + trả lời CAPTCHA để nhận Lúa</p>
-<div id="verifyBox" style="margin-top:12px"></div>
-</div></div>
-
-<div id="toast" class="toast hidden"></div>
-
+<div class="notice">🌾 Kiếm Lúa Online đang trong giai đoạn xây dựng. Các chức năng nhận thưởng và rút tiền sẽ được kết nối sau.</div>
+</main>
+<nav class="bottom">
+<button onclick="show('Tổng quan')"><span>🏠</span>Trang chủ</button>
+<button onclick="show('Nhiệm vụ')"><span>🎯</span>Nhiệm vụ</button>
+<button onclick="show('Tuyển Ref')"><span>👥</span>Giới thiệu</button>
+<button onclick="show('Ví Lúa')"><span>💰</span>Ví Lúa</button>
+<button onclick="show('Hồ sơ')"><span>👤</span>Cá nhân</button>
+</nav>
 <script>
-let balance=128500;
-let filter='all';
-let currentTask=null;
-let captchaAns=0, captchaQ='';
-let txs=[
- {t:'Xem video',a:5000},{t:'Tải app',a:3500},{t:'Rút tiền đã duyệt',a:-50000},{t:'Khảo sát 2 phút',a:4500},{t:'Theo dõi Fanpage',a:3000}
-];
-let wds=[
- {a:50000,s:'Đã thanh toán',c:'green'},{a:100000,s:'Chờ duyệt',c:'yellow'},{a:30000,s:'Bị từ chối',c:'red'}
-];
-const tasks=[
- {title:'Xem video giới thiệu 30s',reward:5000,type:'link',desc:'Xem hết video 30s, lấy mã xác nhận.'},
- {title:'Tải app ngân hàng',reward:15000,type:'app',desc:'Tải app, đăng ký tài khoản, lấy mã.'},
- {title:'Đăng ký tài khoản',reward:8000,type:'link',desc:'Đăng ký tài khoản mới, lấy mã.'},
- {title:'Khảo sát 2 phút',reward:4500,type:'link',desc:'Trả lời khảo sát 2 phút.'},
- {title:'Theo dõi Fanpage',reward:3000,type:'link',desc:'Theo dõi Fanpage, chụp mã.'}
-];
-function fmt(n){return n.toLocaleString('vi-VN')+' Lúa'}
-function showToast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)}
-function go(p){
- ['home','nhiem-vu','vi','rut-tien','ca-nhan'].forEach(x=>{
-  document.getElementById('page-'+x).classList.toggle('hidden',x!==p);
-  document.getElementById('nav-'+x).classList.toggle('on',x===p);
- });
- if(p==='vi')renderTx(); if(p==='nhiem-vu')renderTasks(); if(p==='rut-tien')renderWd();
- window.scrollTo(0,0);
+function show(name){
+alert(name+'\nChức năng đang được xây dựng.');
 }
-function renderTasks(){
- let q=(document.getElementById('searchTask').value||'').toLowerCase();
- let list=tasks.filter(t=>(filter==='all'||t.type===filter)&&t.title.toLowerCase().includes(q));
- document.getElementById('taskList').innerHTML=list.map((t,i)=>`
- <div class="card task" onclick="openTask(${tasks.indexOf(t)})"><div style="display:flex;justify-content:space-between"><b>${t.title}</b><span class="green">+${fmt(t.reward)}</span></div><p class="small" style="margin-top:4px">${t.desc}</p><span class="chip">${t.type==='link'?'Link':'App'}</span><span class="badge">Mã + CAPTCHA</span></div>`).join('')||'<div class="card">Không có nhiệm vụ.</div>';
-}
-function renderTx(){
- document.getElementById('txList').innerHTML=txs.map(x=>`<div style="display:flex;justify-content:space-between;margin-top:8px"><span>${x.t}</span><b class="${x.a>=0?'green':'red'}">${x.a>=0?'+':''}${fmt(x.a)}</b></div>`).join('');
- document.getElementById('balanceVi').textContent=fmt(balance);
- document.getElementById('balanceHome').textContent=fmt(balance);
- document.getElementById('balanceRut').textContent=fmt(balance);
-}
-function renderWd(){
- document.getElementById('wdList').innerHTML=wds.map(w=>`<div style="display:flex;justify-content:space-between;margin-top:8px"><span>${fmt(w.a)}</span><b class="${w.c}">${w.s}</b></div>`).join('');
-}
-function setWd(v){document.getElementById('wdAmount').value=v;updateWd()}
-function updateWd(){let v=Number(document.getElementById('wdAmount').value||0);document.getElementById('wdNet').textContent=fmt(v)}
-function submitWd(){
- let v=Number(document.getElementById('wdAmount').value||0);
- if(!v||v<10000) return showToast('Tối thiểu 10.000 Lúa');
- if(v>balance) return showToast('Số dư không đủ');
- if(!document.getElementById('wdName').value||!document.getElementById('wdAcc').value) return showToast('Nhập tên + số tài khoản');
- balance-=v; wds.unshift({a:v,s:'Chờ duyệt',c:'yellow'}); renderTx(); renderWd(); showToast('Đã gửi yêu cầu, chờ Admin duyệt'); go('rut-tien');
-}
-function openTask(i){
- currentTask=tasks[i];
- document.getElementById('taskTitle').textContent=currentTask.title;
- document.getElementById('taskReward').textContent='+'+fmt(currentTask.reward);
- document.getElementById('taskDesc').textContent=currentTask.desc;
- document.getElementById('taskModal').classList.remove('hidden');
- showStep1();
-}
-function closeModal(){document.getElementById('taskModal').classList.add('hidden')}
-function newCaptcha(){
- let a=Math.floor(Math.random()*9)+1, b=Math.floor(Math.random()*9)+1, op=['+','-','×'][Math.floor(Math.random()*3)];
- if(op==='+'){captchaQ=a+' + '+b+' = ?';captchaAns=a+b}
- if(op==='-'){captchaQ=Math.max(a,b)+' - '+Math.min(a,b)+' = ?';captchaAns=Math.max(a,b)-Math.min(a,b)}
- if(op==='×'){captchaQ=a+' × '+b+' = ?';captchaAns=a*b}
- let el=document.getElementById('captchaQ'); if(el) el.textContent=captchaQ;
-}
-function showStep1(){
- document.getElementById('verifyBox').innerHTML=`
- <p><b>Bước 1: Nhập mã xác nhận</b></p>
- <input id="codeIn" placeholder="Nhập mã, ví dụ ABC123">
- <button class="btn" onclick="checkCode()">Kiểm tra mã</button>
- <p class="small" style="margin-top:6px">Demo: nhập 6 ký tự bất kỳ để qua bước CAPTCHA.</p>`;
-}
-function checkCode(){
- let v=document.getElementById('codeIn').value.trim();
- if(v.length<6) return showToast('Nhập mã 6 ký tự');
- document.getElementById('verifyBox').innerHTML=`
- <p><b>Bước 2: CAPTCHA phép tính</b></p>
- <div style="background:rgba(255,255,255,.1);padding:14px;border-radius:12px;text-align:center;font-size:24px;font-weight:800;margin-top:8px"><span id="captchaQ"></span></div>
- <input id="capAns" type="number" placeholder="Nhập đáp án">
- <button class="btn" onclick="checkCaptcha()">Xác minh & Nhận Lúa</button>
- <button class="btn btn-ghost" onclick="newCaptcha()">Đổi phép tính</button>`;
- newCaptcha();
-}
-function checkCaptcha(){
- let v=Number(document.getElementById('capAns').value);
- if(v!==captchaAns) return showToast('Sai rồi, thử lại!');
- balance+=currentTask.reward;
- txs.unshift({t:currentTask.title,a:currentTask.reward});
- renderTx();
- document.getElementById('verifyBox').innerHTML=`<div style="text-align:center;padding:10px"><div style="font-size:44px">🎉</div><h3>Chúc mừng!</h3><p>Bạn đã nhận <b class="green">+${fmt(currentTask.reward)}</b></p><button class="btn" onclick="closeModal();go('vi')">Xem ví</button></div>`;
- showToast('Đã cộng '+fmt(currentTask.reward));
-}
-renderTasks(); renderTx(); renderWd();
 </script>
 </body>
 </html>
