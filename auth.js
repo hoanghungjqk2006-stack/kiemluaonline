@@ -24,5 +24,5 @@
     client.auth.getSession().then(({data})=>{user=data.session?.user||null;refresh();});
   } else { console.error('Không tải được Supabase SDK hoặc cấu hình.'); }
   const originalRender=window.render;
-  if(typeof originalRender==='function'){ window.render=function(){ originalRender(); if(window.page==='profile'){ const screen=document.getElementById('screen'); if(screen){ const panel=document.createElement('div'); panel.innerHTML=window.authPanelHTML(); screen.appendChild(panel.firstElementChild); } } }; window.render(); }
+  if(typeof originalRender==='function'){ window.render=function(){ originalRender(); const screen=document.getElementById('screen'); if(screen && screen.innerHTML.includes('Hồ sơ cá nhân')){ const panel=document.createElement('div'); panel.innerHTML=window.authPanelHTML(); screen.appendChild(panel.firstElementChild); } }; window.render(); }
 })();
