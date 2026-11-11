@@ -1,88 +1,71 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#147a3b">
 <title>Kiếm Lúa Online</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f4f8ef;font-family:Arial,sans-serif;color:#243b27}
-header{background:linear-gradient(135deg,#137b38,#36a852);color:white;padding:24px 18px;border-radius:0 0 25px 25px}
-header h2{margin:0 0 6px}
-header p{margin:0;font-size:13px}
-.container{padding:16px;max-width:600px;margin:auto}
-.balance{background:linear-gradient(120deg,#ffdc65,#fff0a7);padding:20px;border-radius:18px;margin-top:16px;color:#493b13}
-.balance small{font-size:13px}
-.balance h1{font-size:32px;margin:10px 0}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.stat,.card{background:white;padding:16px;border-radius:15px;box-shadow:0 3px 12px #00000008}
-.stat strong{display:block;font-size:20px;color:#218444;margin-top:8px}
-h3{font-size:17px;margin:23px 0 12px}
-.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.menu button{background:white;border:0;border-radius:14px;padding:15px 5px;color:#276d3b;font-weight:bold}
-.menu span{display:block;font-size:25px;margin-bottom:8px}
-.task{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
-.task p{font-size:13px;color:#777;margin:5px 0 0}
-.btn{background:#249648;color:white;border:0;padding:10px 15px;border-radius:10px;font-weight:bold}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px 2px;box-shadow:0 -3px 15px #0001}
-.bottom button{border:0;background:none;color:#39804b;font-size:11px}
-.bottom span{display:block;font-size:19px;margin-bottom:4px}
-main{padding-bottom:85px}
-.notice{background:#e7f6e8;color:#286d3a;padding:12px;border-radius:12px;font-size:13px;margin-top:15px}
+:root{--green:#167a3b;--green2:#25a653;--bg:#f3f7f1;--ink:#203729;--muted:#78847b;--gold:#ffe28a;--line:#e8eee7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}.app{max-width:560px;margin:auto;min-height:100vh;background:var(--bg);padding-bottom:88px}.hero{background:linear-gradient(140deg,#116a32,#29a653);color:#fff;padding:24px 18px 25px;border-radius:0 0 26px 26px}.top{display:flex;align-items:center;justify-content:space-between}.brand{font-size:19px;font-weight:900;letter-spacing:.3px}.tagline{font-size:12px;opacity:.88;margin-top:5px}.avatar{border:1px solid #ffffff66;background:#ffffff20;color:white;border-radius:50%;width:42px;height:42px;font-size:20px}.wrap{padding:15px}.balance{background:linear-gradient(120deg,#ffda70,#fff0b6);padding:18px;border-radius:19px;color:#594315;margin-top:-3px;box-shadow:0 5px 18px #725a1712}.eyebrow{font-size:12px;font-weight:700;opacity:.8}.amount{font-size:32px;font-weight:900;margin:5px 0}.sub{font-size:11px}.balance-actions{display:flex;gap:9px;margin-top:14px}.goldbtn{border:0;background:#fff9e7;color:#75540b;border-radius:11px;padding:10px 13px;font-size:12px;font-weight:800}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.stat,.card{background:white;border:1px solid #edf1eb;border-radius:16px;padding:14px;box-shadow:0 3px 12px #142d1607}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:20px;color:var(--green);margin-top:5px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 11px}.section-head h3{font-size:16px;margin:0}.link{border:0;background:none;color:var(--green);font-size:12px;font-weight:800}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 3px;color:#316b41;font-size:11px;font-weight:700}.quick i{display:block;font-style:normal;font-size:23px;margin-bottom:6px}.task{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#eaf6eb;font-size:21px;flex-shrink:0}.task-info{flex:1;min-width:0}.task-info b{font-size:13px}.task-info p{font-size:11px;color:var(--muted);margin:4px 0 0}.reward{font-size:11px;color:#a7770c;font-weight:800;margin-top:4px}.btn{border:0;background:var(--green);color:white;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:800}.btn.light{background:#eaf5ec;color:var(--green)}.btn.red{background:#fff0ed;color:#bd4c3d}.notice{background:#e8f5e9;border-radius:13px;padding:12px;color:#39734a;font-size:11px;line-height:1.5;margin-top:15px}.page-title{font-size:21px;font-weight:900;margin:6px 0 4px}.muted{color:var(--muted);font-size:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px}.field input,.field select{width:100%;padding:12px;border:1px solid #dfe8dd;border-radius:11px;background:white;outline-color:var(--green)}.full{width:100%;padding:12px}.pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#edf6ed;color:var(--green);font-size:10px;font-weight:800}.empty{text-align:center;padding:26px 12px;color:var(--muted);font-size:12px}.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);display:flex;justify-content:space-around;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:5}.tabs button{border:0;background:none;color:#849087;font-size:10px;min-width:54px}.tabs button span{display:block;font-size:20px;margin-bottom:3px}.tabs button.active{color:var(--green);font-weight:900}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.divider{height:1px;background:var(--line);margin:12px 0}.admin{border:1px dashed #d5b45e;background:#fffaf0;padding:12px;border-radius:14px;margin-top:14px}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#203729;color:white;padding:11px 16px;border-radius:12px;font-size:12px;z-index:9;display:none;max-width:90%;text-align:center}.hide{display:none!important}
 </style>
 </head>
 <body>
-<header>
-<h2>🌾 KIẾM LÚA ONLINE</h2>
-<p>Chăm chỉ mỗi ngày – Tích lũy từng hạt lúa!</p>
-</header>
-<main class="container">
-<section class="balance">
-<small>💰 SỐ DƯ KHẢ DỤNG (DEMO)</small>
-<h1>0 Lúa</h1>
-<small>Đây là giao diện thử nghiệm, chưa có tiền thật.</small>
-</section>
-<div class="stats">
-<div class="stat">🌱 Lúa chờ duyệt<strong>0</strong></div>
-<div class="stat">📈 Nhiệm vụ<strong>0</strong></div>
-</div>
-<h3>🌻 Menu chính</h3>
-<div class="menu">
-<button onclick="show('Tổng quan')"><span>🏠</span>Tổng quan</button>
-<button onclick="show('Nhiệm vụ')"><span>🎯</span>Nhiệm vụ</button>
-<button onclick="show('Tuyển Ref')"><span>👥</span>Tuyển Ref</button>
-<button onclick="show('Phúc lợi')"><span>🎁</span>Phúc lợi</button>
-<button onclick="show('Rút tiền')"><span>💸</span>Rút tiền</button>
-<button onclick="show('Lịch sử')"><span>📜</span>Lịch sử</button>
-<button onclick="show('Hồ sơ')"><span>👤</span>Hồ sơ</button>
-</div>
-<h3>🔥 Nhiệm vụ nổi bật</h3>
-<div class="card">
-<div class="task">
-<div><b>🔗 Link rút gọn</b><p>Hoàn thành nhiệm vụ nhận thưởng</p></div>
-<button class="btn" onclick="show('Nhiệm vụ Link rút gọn')">Xem</button>
-</div>
-</div>
-<div class="card" style="margin-top:10px">
-<div class="task">
-<div><b>📱 Nhiệm vụ App</b><p>Khám phá ứng dụng và nhận thưởng</p></div>
-<button class="btn" onclick="show('Nhiệm vụ App')">Xem</button>
-</div>
-</div>
-<div class="notice">🌾 Kiếm Lúa Online đang trong giai đoạn xây dựng. Các chức năng nhận thưởng và rút tiền sẽ được kết nối sau.</div>
-</main>
-<nav class="bottom">
-<button onclick="show('Tổng quan')"><span>🏠</span>Trang chủ</button>
-<button onclick="show('Nhiệm vụ')"><span>🎯</span>Nhiệm vụ</button>
-<button onclick="show('Tuyển Ref')"><span>👥</span>Giới thiệu</button>
-<button onclick="show('Ví Lúa')"><span>💰</span>Ví Lúa</button>
-<button onclick="show('Hồ sơ')"><span>👤</span>Cá nhân</button>
+<div class="app">
+<header class="hero"><div class="top"><div><div class="brand">🌾 KIẾM LÚA ONLINE</div><div class="tagline">Chăm chỉ mỗi ngày – Tích lũy từng hạt lúa!</div></div><button class="avatar" onclick="navigate('profile')">👤</button></div></header>
+<main class="wrap" id="screen"></main>
+<nav class="tabs">
+<button data-page="home" onclick="navigate('home')"><span>🏠</span>Trang chủ</button>
+<button data-page="tasks" onclick="navigate('tasks')"><span>🎯</span>Nhiệm vụ</button>
+<button data-page="ref" onclick="navigate('ref')"><span>👥</span>Giới thiệu</button>
+<button data-page="wallet" onclick="navigate('wallet')"><span>💰</span>Ví Lúa</button>
+<button data-page="profile" onclick="navigate('profile')"><span>👤</span>Cá nhân</button>
 </nav>
+<div class="toast" id="toast"></div>
+</div>
 <script>
-function show(name){
-alert(name+'\nChức năng đang được xây dựng.');
+const DEMO=true;
+let page='home';
+let tasks=[
+{id:1,title:'Trải nghiệm link rút gọn',type:'Link rút gọn',desc:'Mở liên kết và làm theo hướng dẫn nhiệm vụ.',reward:100,icon:'🔗',status:'Đang mở'},
+{id:2,title:'Khám phá ứng dụng mới',type:'App',desc:'Tìm hiểu ứng dụng theo yêu cầu nhiệm vụ.',reward:200,icon:'📱',status:'Đang mở'}
+];
+let historyItems=[];
+let balance=0,pending=0,completed=0;
+const $=s=>document.querySelector(s);
+function money(n){return Number(n).toLocaleString('vi-VN')+' Lúa'}
+function toast(s){let t=$('#toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}
+function navigate(p){page=p;render();document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));window.scrollTo(0,0)}
+function head(title,desc=''){return '<div class="page-title">'+title+'</div>'+(desc?'<div class="muted">'+desc+'</div>':'')}
+function taskCard(t){return '<div class="task"><div class="task-icon">'+t.icon+'</div><div class="task-info"><b>'+esc(t.title)+'</b><p>'+esc(t.desc)+'</p><div class="reward">+'+money(t.reward)+'</div></div><button class="btn" onclick="doTask('+t.id+')">Nhận</button></div>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+let h='';
+if(page==='home'){
+h='<section class="balance"><div class="eyebrow">💰 SỐ DƯ KHẢ DỤNG · DEMO</div><div class="amount">'+money(balance)+'</div><div class="sub">Số dư minh họa trên thiết bị này, chưa có giá trị quy đổi.</div><div class="balance-actions"><button class="goldbtn" onclick="navigate(\'wallet\')">💸 Ví & rút tiền</button><button class="goldbtn" onclick="navigate(\'history\')">📜 Lịch sử</button></div></section><div class="stats"><div class="stat"><span>🌱 Lúa chờ duyệt</span><strong>'+money(pending)+'</strong></div><div class="stat"><span>✅ Nhiệm vụ hoàn thành</span><strong>'+completed+'</strong></div></div><div class="section-head"><h3>🌻 Truy cập nhanh</h3></div><div class="quick"><button onclick="navigate(\'tasks\')"><i>🎯</i>Nhiệm vụ</button><button onclick="navigate(\'ref\')"><i>👥</i>Tuyển ref</button><button onclick="navigate(\'benefits\')"><i>🎁</i>Phúc lợi</button><button onclick="navigate(\'history\')"><i>📜</i>Lịch sử</button></div><div class="section-head"><h3>🔥 Nhiệm vụ nổi bật</h3><button class="link" onclick="navigate(\'tasks\')">Xem tất cả →</button></div><div class="card">'+(tasks.slice(0,3).map(taskCard).join('')||'<div class="empty">Chưa có nhiệm vụ.</div>')+'</div><div class="notice">ℹ️ Đây là bản giao diện demo. Điểm, nhiệm vụ, giới thiệu và yêu cầu rút tiền chưa kết nối máy chủ hoặc thanh toán thật.</div>';
+}else if(page==='tasks'){
+h=head('🎯 Nhiệm vụ','Chọn nhiệm vụ phù hợp để trải nghiệm bản demo.')+'<div class="section-head"><h3>Tất cả nhiệm vụ</h3><span class="pill">'+tasks.length+' nhiệm vụ</span></div><div class="card">'+(tasks.map(taskCard).join('')||'<div class="empty">Chưa có nhiệm vụ mới.</div>')+'</div><div class="notice">Nhiệm vụ nhận thưởng thật cần có máy chủ xác minh hoàn thành và chống gian lận.</div>';
+}else if(page==='wallet'){
+h=head('💰 Ví Lúa','Quản lý số dư và yêu cầu rút (bản demo).')+'<div class="balance"><div class="eyebrow">SỐ DƯ KHẢ DỤNG</div><div class="amount">'+money(balance)+'</div><div class="sub">Lúa đang chờ duyệt: '+money(pending)+'</div></div><div class="card" style="margin-top:12px"><h3>💸 Tạo yêu cầu rút demo</h3><div class="field"><label>Số Lúa muốn rút</label><input id="withdrawAmount" type="number" min="1" placeholder="Nhập số Lúa"></div><div class="field"><label>Ngân hàng / phương thức</label><select id="method"><option>Ngân hàng (demo)</option><option>Ví điện tử (demo)</option></select></div><div class="field"><label>Thông tin nhận tiền</label><input id="account" placeholder="Tên chủ tài khoản / số tài khoản"></div><button class="btn full" onclick="withdraw()">Gửi yêu cầu demo</button></div><div class="notice">Không nhập mật khẩu, mã OTP hoặc thông tin nhạy cảm. Chức năng rút tiền chưa kết nối ngân hàng.</div>';
+}else if(page==='ref'){
+h=head('👥 Tuyển ref','Chia sẻ mã giới thiệu để mời bạn bè (minh họa).')+'<div class="card"><div class="eyebrow">MÃ GIỚI THIỆU CỦA BẠN</div><div class="amount" style="font-size:27px">LUAKLO123</div><button class="btn full" onclick="copyRef()">Sao chép mã giới thiệu</button><div class="divider"></div><div class="grid2"><div class="stat"><span>Người đã giới thiệu</span><strong>0</strong></div><div class="stat"><span>Thưởng giới thiệu</span><strong>0 Lúa</strong></div></div></div><div class="notice">Mã giới thiệu hiện là mã mẫu. Hệ thống ref thật cần tài khoản và ghi nhận liên kết từ máy chủ.</div>';
+}else if(page==='benefits'){
+h=head('🎁 Phúc lợi','Các chương trình dành cho thành viên.')+'<div class="card"><div class="task-icon">🌟</div><h3>Thưởng thành viên mới</h3><p class="muted">Chương trình đang được cập nhật.</p><span class="pill">Sắp ra mắt</span></div><div class="card" style="margin-top:10px"><div class="task-icon">🎉</div><h3>Sự kiện và quà tặng</h3><p class="muted">Theo dõi các chương trình thưởng mới tại đây.</p><span class="pill">Sắp ra mắt</span></div>';
+}else if(page==='history'){
+h=head('📜 Lịch sử hoạt động','Các thao tác trong phiên demo hiện tại.')+'<div class="card">'+(historyItems.length?historyItems.slice().reverse().map(x=>'<div class="row"><div><b style="font-size:12px">'+esc(x.title)+'</b><div class="muted">'+esc(x.date)+'</div></div><div style="text-align:right"><b style="font-size:12px">'+esc(x.amount)+'</b><div class="pill">'+esc(x.status)+'</div></div></div><div class="divider"></div>').join(''):'<div class="empty">📭 Chưa có hoạt động nào.</div>')+'</div>';
+}else if(page==='profile'){
+h=head('👤 Hồ sơ cá nhân','Thông tin tài khoản thử nghiệm.')+'<div class="card"><div class="row"><div class="task-icon">👤</div><div style="flex:1"><b>Khách demo</b><div class="muted">Chưa đăng nhập tài khoản thật</div></div><span class="pill">DEMO</span></div><div class="divider"></div><div class="row"><span class="muted">Tên hiển thị</span><b>Khách Kiếm Lúa</b></div><div class="divider"></div><div class="row"><span class="muted">Trạng thái</span><b>Đang trải nghiệm</b></div></div><div class="admin"><b>🛠 Khu vực quản trị thử nghiệm</b><p class="muted">Chỉ dùng để xem cách quản lý nhiệm vụ. Chưa có đăng nhập admin và phân quyền bảo mật.</p><button class="btn full" onclick="navigate(\'admin\')">Mở quản trị demo</button></div>';
+}else if(page==='admin'){
+h=head('🛠 Quản trị demo','Thêm nhiệm vụ để xem giao diện hoạt động.')+'<div class="card"><h3>➕ Thêm nhiệm vụ mới</h3><div class="field"><label>Tên nhiệm vụ</label><input id="newTitle" placeholder="Ví dụ: Cài đặt ứng dụng"></div><div class="field"><label>Loại nhiệm vụ</label><select id="newType"><option>Link rút gọn</option><option>App</option><option>Nhiệm vụ khác</option></select></div><div class="field"><label>Mô tả</label><input id="newDesc" placeholder="Hướng dẫn hoàn thành"></div><div class="field"><label>Mức thưởng (Lúa demo)</label><input id="newReward" type="number" min="1" placeholder="100"></div><button class="btn full" onclick="addTask()">Thêm nhiệm vụ demo</button></div><div class="section-head"><h3>Danh sách nhiệm vụ</h3></div><div class="card">'+(tasks.map(t=>'<div class="row"><div><b style="font-size:12px">'+esc(t.title)+'</b><div class="muted">'+esc(t.type)+' · '+money(t.reward)+'</div></div><button class="btn red" onclick="removeTask('+t.id+')">Xóa</button></div><div class="divider"></div>').join('')||'<div class="empty">Chưa có nhiệm vụ.</div>')+'</div><button class="btn light full" style="margin-top:12px" onclick="navigate(\'profile\')">← Quay lại hồ sơ</button>';
 }
+$('#screen').innerHTML=h;
+}
+function doTask(id){let t=tasks.find(x=>x.id===id);if(!t)return;pending+=t.reward;completed++;historyItems.push({title:'Gửi hoàn thành: '+t.title,amount:'+'+money(t.reward),status:'Chờ duyệt demo',date:new Date().toLocaleString('vi-VN')});toast('Đã ghi nhận yêu cầu hoàn thành demo.');render()}
+function withdraw(){let n=Number($('#withdrawAmount').value),a=$('#account').value.trim();if(!n||n<1||n>balance){toast('Số Lúa không hợp lệ hoặc không đủ số dư demo.');return}if(!a){toast('Vui lòng nhập thông tin nhận tiền demo.');return}balance-=n;historyItems.push({title:'Yêu cầu rút '+$('#method').value,amount:'-'+money(n),status:'Chờ xử lý demo',date:new Date().toLocaleString('vi-VN')});toast('Đã tạo yêu cầu rút demo.');render()}
+function copyRef(){if(navigator.clipboard){navigator.clipboard.writeText('LUAKLO123').then(()=>toast('Đã sao chép mã demo.')).catch(()=>toast('Mã giới thiệu: LUAKLO123'))}else toast('Mã giới thiệu: LUAKLO123')}
+function addTask(){let title=$('#newTitle').value.trim(),type=$('#newType').value,desc=$('#newDesc').value.trim(),reward=Number($('#newReward').value);if(!title||!desc||!reward||reward<1){toast('Vui lòng nhập đủ thông tin hợp lệ.');return}tasks.push({id:Date.now(),title,type,desc,reward,icon:type==='App'?'📱':type==='Link rút gọn'?'🔗':'🌟',status:'Đang mở'});toast('Đã thêm nhiệm vụ demo.');render()}
+function removeTask(id){tasks=tasks.filter(t=>t.id!==id);toast('Đã xóa nhiệm vụ demo.');render()}
+render();
 </script>
 </body>
 </html>
