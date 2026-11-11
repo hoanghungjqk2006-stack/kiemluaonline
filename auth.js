@@ -11,7 +11,7 @@
   async function refresh(){
     profile=null;
     if(user && client){ const {data}=await client.from('profiles').select('display_name,role,referral_code').eq('id',user.id).maybeSingle(); profile=data||null; }
-    if(typeof window.render==='function' && window.page==='profile') window.render();
+    if(typeof window.render==='function') window.render();
   }
   window.addEventListener('click', async (e)=>{
     if(e.target.id==='sbLogin'){ const email=document.getElementById('sbEmail')?.value.trim(); const password=document.getElementById('sbPassword')?.value; if(!email||!password){toast('Nhập email và mật khẩu.');return;} const {error}=await client.auth.signInWithPassword({email,password}); if(error)toast('Đăng nhập lỗi: '+error.message); else toast('Đăng nhập thành công.'); }
